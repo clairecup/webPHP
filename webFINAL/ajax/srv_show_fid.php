@@ -5,7 +5,7 @@
     session_start();
 	$_SESSION['fid'] = Intval($_POST['fid']);
 	$fid =  $_SESSION['fid'];
-	//$forum =  $_SESSION['forum'];
+	;
 
     // 第2個 資料庫連線
 	$rd = new PDO($dsn, $db_user,$db_passwd);

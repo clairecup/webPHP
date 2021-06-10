@@ -34,10 +34,10 @@
 </head>
 <body>	
 	<div id="header">
-			<div id="h_left">
-				<button class="btn-word" onclick="location.href='<?PHP echo $HOME_URL?>';"><i class="fas fa-home fa-2x"></i></button>
-                <button class="btn-word" onclick="location.href='<?PHP echo $DISCUSS_URL?>';"><i class="fas fa-comments fa-2x"></i></button>               
-			</div>             
+			<span id="h_left">
+                <a href="<?PHP echo $MAP_URL;?>" class="title_href" class='a'><i class="fas fa-map-marked-alt fa-2x"></i></a>
+                <a href="<?PHP echo $HOME_URL;?>" class="title_href" class='a'><i class="fas fa-comments fa-2x"></i></a>                
+            </span>             
             <span id="h_mid"><h1 align="center">修改資料</h1></span>
 			<span id="h_right">&nbsp;</span>              
     </div> 
@@ -66,7 +66,7 @@
                     <tr>
 						<td width="20%"></td>                        
                         <td width="30%" align="center" ><button type="button" class="btn-primary" onclick='save()'>儲存</button></td>
-						<td width="30%" align="center" ><button type="button" onclick="history.back()">取消</button></td>
+						<td width="30%" align="center" ><button type="button" onclick="window.location.href='<?PHP echo $HOME_URL;?>'">取消</button></td>
 						<td width="20%"></td> 
                     </tr>                   
                 </table>                 

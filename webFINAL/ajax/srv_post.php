@@ -38,8 +38,8 @@
 	$ip        = $_SERVER['REMOTE_ADDR'];
 
 	$sql = "INSERT INTO $TABLENAME (uid,title,content,longitude, latitude,health, feed, ip) values(?,?,?,?,?,?,?,?)";//將需要過濾的欄位以?代替
-	$sth = $db -> prepare($sql);
-	$result = $sth -> execute( array($uid, $title, $content, $lng, $lat, $health, $feed, $ip) );  //以字串陣列傳入
+	$sth = $db->prepare($sql);
+	$result = $sth->execute( array($uid, $title, $content, $lng, $lat, $health, $feed, $ip) );  //以字串陣列傳入
     //$sql.= " VALUES($uid,'$title','$content','$ip')";
 	
 	//$result = $db->exec($sql);

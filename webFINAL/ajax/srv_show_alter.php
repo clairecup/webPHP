@@ -28,7 +28,7 @@
         $fid = Intval($_POST['fid']);
 
         $TABLENAME = "message".$fid;
-	    $RESPONAME = "respon".$fid;
+        $RESPONAME = "respon".$fid;
 
         if(checkAdminFid($fid) ||  $_SESSION['admin']==0 ){//檢查權限
             //刪除主題
@@ -58,7 +58,7 @@
         $rid = Intval($_POST['rid']);
         $fid = Intval($_POST['fid']);
 
-	    $RESPONAME = "respon".$fid;
+        $RESPONAME = "respon".$fid;
         if(checkAdminFid($fid) ||  $_SESSION['admin']==0 ){//檢查權限
             //刪除回應
             $sql = "DELETE FROM $RESPONAME WHERE rid= :rid";
@@ -84,17 +84,24 @@
             echo json_encode( array("result" => "ERROR", "message"=>"[無管理權限，無法新增看板]") );
             exit;
         }
+        
 
         // 檢查是否有傳遞資料
         if(!isset($_POST['forum']) || !isset($_POST['animalType']) ) {
             echo json_encode( array("result" => "ERROR", "message"=>"資料傳遞錯誤", "field"=>"forum" ) );
             exit;
         }
-
+      
 
         // 取用資料並確認資料的正確性
-        $forum       = check_input( $_POST['forum'] , 20 );
-        $animalType  = $_POST['animalType'];        
+        $forum         = check_input( $_POST['forum'] , 20 );
+        $animalType    = $_POST['animalType'];
+        $introduction  = check_input($_POST['introduction'] ); 
+        $nickname      = check_input($_POST['nickname']);
+        $feature       = check_input($_POST['feature'] ); 
+        $characters    = check_input($_POST['characters']); 
+        $places        = check_input($_POST['places']); 
+        $href          = check_input($_POST['href'] );         
         
         if( $forum=="" ) {
             echo json_encode( array("result" => "ERROR", "message"=>"請填寫[新動物名稱]", "field"=>"new_forum_name" ) );
@@ -114,30 +121,45 @@
         $sth = $db->prepare("SELECT count(*) T FROM forum WHERE forum = :forum");
         $sth->bindParam(':forum', $forum, PDO::PARAM_STR);
         $sth->execute();
-        $rows = $sth->fetchAll();
+        if( $sth->errorCode()==0 ) {
+            $rows = $sth->fetchAll();
 
-        // 取出 forum 的筆數 大於 0 --> 帳號重複
-        $T = $rows[0]['T'];
-        if( $T>0 ) {
-		    echo json_encode( array("result" => "ERROR", "message"=>"[看板名稱重複] ".$forum ) );
-		    exit;
+            // 取出 forum 的筆數 大於 0 --> 帳號重複
+            $T = $rows[0]['T'];
+            if( $T>0 ) {
+                echo json_encode( array("result" => "ERROR", "message"=>"[看板名稱重複] ".$forum ) );
+                exit;
+            }
         }
+        else {
+            $errors = $sth->errorInfo();
+            echo($errors[2]);
+        }
+
         // 將輸入的資料 新增至 資料庫forum
-        $sql = "INSERT INTO forum (forum, animal) values(:forum, :animal)"; 
-        $sth = $db -> prepare($sql);
-        $sth->bindParam(':forum', $forum, PDO::PARAM_STR);
-        $sth->bindParam(':animal', $animalType, PDO::PARAM_STR);
-        $sth -> execute();
-        
+        $sql = "INSERT INTO forum (forum, animal, introduce, nickname, features, characters, places, socialmedia)";
+        $sql.= " VALUES(:forum,:animal,:introduce,:nickname,:features,:characters,:places,:socialmedia)";
+        $sth = $db->prepare($sql);
+
+		$sth->bindParam(':forum'      , $forum       , PDO::PARAM_STR);
+		$sth->bindParam(':animal'     , $animalType  , PDO::PARAM_STR);
+		$sth->bindParam(':introduce'  , $introduction, PDO::PARAM_STR);
+		$sth->bindParam(':nickname'   , $nickname    , PDO::PARAM_STR);
+		$sth->bindParam(':features'   , $feature     , PDO::PARAM_STR);
+		$sth->bindParam(':characters' , $characters  , PDO::PARAM_STR);
+		$sth->bindParam(':places'     , $places      , PDO::PARAM_STR);
+		$sth->bindParam(':socialmedia', $href        , PDO::PARAM_STR);
+
+        $sth->execute(); 
+		
         //撈出該筆看板名稱的fid
-        $sth = $db->prepare("SELECT fid FROM forum WHERE forum = :forum");
+        //$sth = $db->prepare("SELECT fid FROM forum WHERE forum = :forum");
+        $sth = $db->prepare("SELECT fid FROM forum WHERE forum =:forum");
         $sth->bindParam(':forum', $forum, PDO::PARAM_STR);
         $sth->execute();        
         $rows = $sth->fetchAll();
         
         $fid =  $rows[0]['fid'];
-        //echo json_encode( array("result" => "ERROR", "message"=>"$fid" ) );
-        //exit;
         $messageTable = "message".$fid;
         $responTable = "respon".$fid;
 
@@ -196,12 +218,13 @@
             //寫入session管理權限
             $_SESSION['admin'].=",".$fid;
         }
-            
+
+
+        
         
         echo json_encode( array("result" => "OK", "message"=>"[成功新增看板]", "fid"=>"$fid" ) );
 
-        
-	
+    
     }
 
 

@@ -16,8 +16,9 @@
 
     // 定義網站的 相對路徑
 	$HOME_TITLE = "政大小動物追蹤網";
-	$HOME_URL = "/webFINAL copy";
-    $MAP_URL = $HOME_URL."/map/map.php";
+	$HOME_URL = "/webFINAL";
+    $DISCUSS_URL = $HOME_URL."/discuss.php";
+    
 
     // 過濾輸入欄位的特殊字元
     function check_input($data, $max=0) {

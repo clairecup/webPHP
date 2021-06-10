@@ -68,10 +68,10 @@
 	<link rel="stylesheet" type="text/css" href="hw05.css">
 <body onload="initialize()">
     <div id="header">
-            <div id="h_left">
-                <button class="btn-word" onclick="location.href='<?PHP echo $HOME_URL?>';"><i class="fas fa-home fa-2x"></i></button>
-                <button class="btn-word" onclick="location.href='<?PHP echo $DISCUSS_URL?>';"><i class="fas fa-comments fa-2x"></i></button>                        
-            </div>           
+            <span id="h_left">
+                <a href="<?PHP echo $MAP_URL;?>" class="title_href" class='a'><i class="fas fa-map-marked-alt fa-2x"></i></a>
+                <a href="<?PHP echo $HOME_URL;?>" class="title_href" class='a'><i class="fas fa-comments fa-2x"></i></a>                
+            </span>           
             <span id="h_mid"><h1 align="center">剛剛發現了＿<?PHP echo $forum;?>＿，<?PHP echo $sound;?></h1></span>
 			<span id="h_right">&nbsp;</span>               
     </div> 
@@ -107,7 +107,7 @@
                 </div>
                 <div class="map">
                     <p><b><?PHP echo $forum;?>在哪裡呢？</b></p>
-                    <div id="post_map" style="height:300px;" name="map"></div>
+                    <div id="mapid" style="height:300px;" name="map"></div>
 
                 </div>
                 <br>
@@ -115,7 +115,7 @@
                     <tr>
 						<td width="20%"></td>                        
                         <td width="30%" align="center" ><button type="button" class="btn-primary" onclick='add()'>新增</button></td>
-						<td width="30%" align="center" ><button type="button" onclick="history.back()">取消</button></td>
+						<td width="30%" align="center" ><button type="button" onclick="window.location.href='<?PHP echo $HOME_URL;?>'">取消</button></td>
 						<td width="20%"></td> 
                     </tr>                   
                 </table>                
@@ -162,7 +162,7 @@
 
     
     function initialize() {
-        mymap = L.map(document.getElementById('post_map'), {
+        mymap = L.map(document.getElementById('mapid'), {
             center: [24.982940, 121.575910],//[24.981831, 121.575416],
             zoom: 15,        
             fullscreenControl: true,//加入fullscreen控制鈕
