@@ -1,12 +1,19 @@
 <?PHP
 
+session_start();
+if ( !isset($_SESSION['uid']) ) {
+    session_destroy();
+    echo "<script>window.location.href='".$HOME_URL."'</script>";
+    exit;
+}
+
 if( !isset($_SESSION['admin']) && !isset($_POST["type"]) ){
     echo "哈哈";
     exit;
 }    
 
 include "tools.php";
-session_start();
+
 
 if( $_POST["type"]==1 )
     showU();

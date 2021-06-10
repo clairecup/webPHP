@@ -101,8 +101,13 @@
         $feature       = check_input($_POST['feature'] ); 
         $characters    = check_input($_POST['characters']); 
         $places        = check_input($_POST['places']); 
-        $href          = check_input($_POST['href'] );         
+        $href          = check_input($_POST['href'] );
+        $imageurl      = $_POST['imageurl'];
         
+		if( $imageurl=="undefined" ) {
+			$imageurl="images/defalt.png";
+		}
+		
         if( $forum=="" ) {
             echo json_encode( array("result" => "ERROR", "message"=>"請填寫[新動物名稱]", "field"=>"new_forum_name" ) );
             exit;
@@ -137,8 +142,8 @@
         }
 
         // 將輸入的資料 新增至 資料庫forum
-        $sql = "INSERT INTO forum (forum, animal, introduce, nickname, features, characters, places, socialmedia)";
-        $sql.= " VALUES(:forum,:animal,:introduce,:nickname,:features,:characters,:places,:socialmedia)";
+        $sql = "INSERT INTO forum (forum, animal, introduce, nickname, features, characters, places, socialmedia, imageurl)";
+        $sql.= " VALUES(:forum,:animal,:introduce,:nickname,:features,:characters,:places,:socialmedia, :imageurl)";
         $sth = $db->prepare($sql);
 
 		$sth->bindParam(':forum'      , $forum       , PDO::PARAM_STR);
@@ -149,6 +154,7 @@
 		$sth->bindParam(':characters' , $characters  , PDO::PARAM_STR);
 		$sth->bindParam(':places'     , $places      , PDO::PARAM_STR);
 		$sth->bindParam(':socialmedia', $href        , PDO::PARAM_STR);
+        $sth->bindParam(':imageurl'   , $imageurl    , PDO::PARAM_STR);
 
         $sth->execute(); 
 		
@@ -170,10 +176,11 @@
                         `title` varchar(256) NOT NULL COMMENT '標題',
                         `content` varchar(1024) NOT NULL COMMENT '內容',
                         `time` timestamp NOT NULL DEFAULT current_timestamp() COMMENT '發表時間',
-                        `longtitude` double NOT NULL COMMENT '經度',
+                        `longitude` double NOT NULL COMMENT '經度',
                         `latitude` double NOT NULL COMMENT '緯度',
                         `health` varchar(11) NOT NULL COMMENT '健康狀態',
                         `feed` varchar(11) NOT NULL COMMENT '有無餵食',
+                        `imageurl` varchar(128) DEFAULT NULL,
                         `ip` varchar(64) NOT NULL COMMENT '發文者IP'
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

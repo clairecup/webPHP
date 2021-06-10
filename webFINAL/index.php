@@ -31,24 +31,18 @@
     }
     $marker ="";
     
-    $i = 0;
 	while( ($row=$sth->fetch()) ) {
 		$fid      = $row["fid"];
 		$forum    = $row["forum"];
         $imageurl = $row["imageurl"];
         $iconurl  = $row["iconurl"];
        
-		$board_str.= "<tr height=32px><td width=100%>\n"; 
+        $board_str.= "<tr height=32px><td width=100%>\n"; 
+        //$board_str.= "<a onclick=\"viewBoard($fid,'$forum')\"><img id='icon' class='img-thumbnail'  src='$iconurl'></a>\n";
         $board_str.= "<button class='btn-equal-width' id='forum$fid' value='$forum' onclick=\"viewBoard($fid,'$forum')\"><img src='$iconurl' class='imgD'>$forum</button>\n";      
-		//$board_str.= "<input type='button' id='forum$fid' value='$forum' onclick=\"viewBoard($fid,'$forum')\">\n";
-		$board_str.= "</td></tr>\n";
+        //$board_str.= "<input type='button' id='forum$fid' value='$forum' onclick=\"viewBoard($fid,'$forum')\">\n";
+        $board_str.= "</td></tr>\n";
 		
-		// 如未指定目前的討論版, 將第一個fid當作預設, 利用最後面javascript來啟動
-		if( $i==0 ) {
-			$_SESSION['fid'] = $fid;
-            $forum = "小橘";
-            $i++;
-		}
         //-------------------------
         //地圖
         //-------------------------
@@ -67,8 +61,12 @@
             $time = $row['time'];
             $longitude = $row['longitude'];
             $latitude = $row['latitude']; 
-            $marker.=  "var marker$mid = L.marker([".$latitude.", ".$longitude."], {icon: AnimalIcon$iconid}).addTo(markers)";
-            $marker.= ".bindPopup('<p class=InfoTitle><a onclick=\"viewBoard($fid,$forum)\">$forum </a></p><p class=info><a>回報文章：".$title."</a></p><p class=info>回報者ID：".$uid."</p><p class=info>活動時間：".$time."</p>');";
+            $marker.= "var marker$mid = L.marker([".$latitude.", ".$longitude."], {icon: AnimalIcon$iconid}).addTo(markers)";
+            $marker.= ".bindPopup(\"<p class=InfoTitle onclick=toDiscuss($fid,'$forum',$mid)>$forum</p>";
+            $marker.= "<p class=info>回報文章：".$title."</p>";
+            $marker.= "<p class=info>回報者ID：".$uid."</p>";
+            $marker.= "<p class=info>活動時間：".$time."</p>\");\n";
+            //$marker.= ".bindPopup('<p class=InfoTitle><b>$forum </b></p><p class=info><a>回報文章：".$title."</a></p><p class=info>回報者ID：".$uid."</p><p class=info>活動時間：".$time."</p>');";
         }
 
 	}      
@@ -91,6 +89,8 @@
         <script src="https://kit.fontawesome.com/0ac3a26684.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" type="text/css" href="style.css">
         <link rel="stylesheet" type="text/css" href="hw05.css">
+
+        <!--map script & style-->
         <script>
         function initialize(){
 
@@ -380,7 +380,6 @@
             <?PHP echo $marker;?> 
         }           
         </script>
-
         <style>
             body{
                 background-color: #B4D0C7;
@@ -452,7 +451,7 @@
             <ul id="h_right" class="menu"><?PHP echo $funcName;?></ul>   
         </div>             
         <div class="mask" style="z-index:999;">
-            <form class="new_mask" >                
+            <div class="new_mask" >                
                 <p>輸入新動物：<p>
                 <br>
                 <div class="new-form">
@@ -460,7 +459,7 @@
                     <input type="text"  class="form-control" id="new_forum_name" name="new_forum_name" placeholder="新動物名稱">                
                 
                     <label for="animalType">**新動物種類：</label>
-                        <select class="form-control" id="animalType">
+                        <select class="form-control" id="animalType" >
                             <option value="" disabled selected>新動物種類</option>                            
                             <option value="dog">狗狗</option>
                             <option value="cat">貓貓</option>
@@ -472,7 +471,14 @@
                     
                     <label for="nickname">請輸入別名：</label>
                     <input type="text"  class="form-control" id="nickname" name="nickname" placeholder="別名"> 
-
+                    
+                    <label for="file">請提供照片: </label>
+                    <form id="uploadForm" method="post" enctype="multipart/form-data" style="display:flex;">
+                        <input type="file" name="file" style="flex:3;">
+                        <input type="button" value="Upload" onclick="upload();" style="flex:1;">                   
+                    </form>
+                    <center><span id = "upload result"></span></center>
+                    <br>
                     <label for="feature">請輸入特徵：</label>
                     <input type="text"  class="form-control" id="feature" name="feature" placeholder="特徵">
                     
@@ -484,6 +490,7 @@
 
                     <label for="href">請輸入個人帳號網址：</label>
                     <input type="text"  class="form-control" id="href" name="href" placeholder="個人帳號網址">
+ 
                 </div>
                 <table width="100%">
                         <tr>
@@ -492,8 +499,8 @@
                             <td width="30%" align="center" > <button type='button' class='btn-primary' onclick="del_new_forum();">取消新增</button></td>
                             <td width="20%"></td> 
                         </tr>                   
-                    </table>               
-            </form>        
+                </table>               
+            </div>        
         </div>
         <div id="box">
             <div class="board">                
@@ -535,56 +542,18 @@
             document.getElementById("imgDiv").innerHTML = "";
             document.getElementById("title").innerHTML = "地圖";
         }
-        function focus(mid){
-            document.getElementById(mid).focus();
-        }
-        //新增看板名稱
-        function new_forum(){                
-            var forum_name = document.getElementById("new_forum_name").value;
-            var animalType = document.getElementById("animalType").value;
-            var introduction = document.getElementById("introduction").value;
-            var nickname = document.getElementById("nickname").value;
-            var feature = document.getElementById("feature").value;
-            var characters = document.getElementById("characters").value;
-            var places = document.getElementById("places").value;
-            var href = document.getElementById("href").value;
-
+        function toDiscuss(fid, forum, mid){ 
+            //alert(fid, forum, mid);            
             var formData = new FormData();
-            formData.append("type", 3);
-            formData.append("forum", forum_name);
-            formData.append("animalType", animalType);
-            formData.append("introduction", introduction);
-            formData.append("nickname", nickname);
-            formData.append("feature", feature);
-            formData.append("characters", characters);
-            formData.append("places", places);
-            formData.append("href", href); 
-        
-
-            //資料傳送資料到後端
-            xhr.open("POST", "ajax/srv_show_alter.php");
+            formData.append("fid", fid);
+            formData.append("forum", forum); 
+            formData.append("mid", mid);           
+            xhr.open("POST", "ajax/srv_session.php");
             xhr.send(formData);
-
-            xhr.onreadystatechange=function() {
-                if (xhr.readyState==4 && xhr.status==200) {
-                    var jsonOBJ = $.parseJSON(xhr.responseText);
-                   // var jsonOBJ = JSON.parse(xhr.responseText);
-                    if (jsonOBJ.result=="OK" ) {                              	                        
-                        alert(jsonOBJ.message);                                
-                        //隱藏遮罩
-                        mask.setAttribute("hidden", "hidden");
-                        new_mask.setAttribute("hidden", "hidden");
-                        window.location.reload();
-                        return;
-                    }
-                    if (jsonOBJ.result=="ERROR" ){
-                        alert(jsonOBJ.message);
-                        document.getElementById(jsonOBJ.field).focus();                                
-                        return;
-                    }                             
-                }
-            }                                   
+            //window.name = mid;
+            window.location = '<?PHP echo $DISCUSS_URL?>';
         }
+        
         // 點選要看的討論版
         function viewBoard(fid,forum) {
             document.getElementById("title").innerHTML = "簡介";
@@ -621,3 +590,4 @@
         }          
     </script>
 </html>
+

@@ -15,10 +15,10 @@
 <body>
     
     <div id="header">
-            <span id="h_left">
-                <a href="<?PHP echo $MAP_URL;?>" class="title_href" class='a'><i class="fas fa-map-marked-alt fa-2x"></i></a>
-                <a href="<?PHP echo $HOME_URL;?>" class="title_href" class='a'><i class="fas fa-comments fa-2x"></i></a>                
-            </span>            
+            <div id="h_left">
+				<button class="btn-word" onclick="location.href='<?PHP echo $HOME_URL?>';"><i class="fas fa-home fa-2x"></i></button>
+                <button class="btn-word" onclick="location.href='<?PHP echo $DISCUSS_URL?>';"><i class="fas fa-comments fa-2x"></i></button>               
+			</div>               
             <span id="h_mid"><h1 align="center">登入</h1></span>
 			<span id="h_right">&nbsp;</span>                
     </div>

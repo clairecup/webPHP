@@ -31,7 +31,7 @@
     }
     
     $first_forum = "";
-    $i = 0;
+    //$i = 0;
 	while( ($row=$sth->fetch()) ) {
 		$fid   = $row["fid"];
 		$forum = $row["forum"];
@@ -41,10 +41,10 @@
 		$board_str.= "</td></tr>\n";
 		
 		// 如未指定目前的討論版, 將第一個fid當作預設, 利用最後面javascript來啟動
-		if( $i==0 ) {
+		if( !isset($_SESSION['fid'])  ) {
 			$_SESSION['fid'] = $fid;
-            $first_forum = $forum;
-            $i++;
+            $_SESSION['forum'] = $forum;
+           //$i++;
 		}   
 	}
     
@@ -70,7 +70,7 @@
             <ul id="h_right" class="menu"><?PHP echo $funcName;?></ul>   
         </div>               
         <div class="mask" style="z-index:999;">
-            <form class="new_mask" >                
+            <div class="new_mask" >                
                 <p>輸入新動物：<p>
                 <br>
                 <div class="new-form">
@@ -89,8 +89,15 @@
                     <textarea rows="1"  id="introduction" class="form-control js-elasticArea" placeholder="簡介" name="introduction"></textarea>
                     
                     <label for="nickname">請輸入別名：</label>
-                    <input type="text"  class="form-control" id="nickname" name="nickname" placeholder="別名"> 
-
+                    <input type="text"  class="form-control" id="nickname" name="nickname" placeholder="別名">
+                    
+                    <label for="file">請提供照片: </label>
+                    <form id="uploadForm" method="post" enctype="multipart/form-data"" style="display:flex;">
+                        <input type="file" name="file" style="flex:3;">
+                        <input type="button" value="Upload" onclick="upload();" style="flex:1;">                   
+                    </form>
+                    <center><span id = "upload result"></span></center>
+                    <br>
                     <label for="feature">請輸入特徵：</label>
                     <input type="text"  class="form-control" id="feature" name="feature" placeholder="特徵">
                     
@@ -102,6 +109,7 @@
 
                     <label for="href">請輸入個人帳號網址：</label>
                     <input type="text"  class="form-control" id="href" name="href" placeholder="個人帳號網址">
+
                 </div>
                 <table width="100%">
                         <tr>
@@ -110,8 +118,8 @@
                             <td width="30%" align="center" > <button type='button' class='btn-primary' onclick="del_new_forum();">取消新增</button></td>
                             <td width="20%"></td> 
                         </tr>                   
-                    </table>               
-            </form>        
+                </table>               
+            </div>        
         </div>
         <div id="box">
             <div class="board">                
@@ -136,7 +144,7 @@
         </div> 
                    
         <script src="./mask.js"></script>
-        <script>       
+        <script>                 
 			// 點選要看的討論版
 			function viewBoard(fid,forum) {
                 switch (forum) {
@@ -152,7 +160,7 @@
                     default:
                         document.getElementById("imgDiv").innerHTML = "<a href='#'><img src='./images/defalt.png' class='imgD'></a>";
                 } 
-            //新增看板名稱
+            /*新增看板名稱
             function new_forum(){                
                 var forum_name = document.getElementById("new_forum_name").value;
                 var animalType = document.getElementById("animalType").value;
@@ -199,6 +207,7 @@
                     }
                 }                                   
             }
+            */
                 
 
 		    var formData = new FormData();
@@ -262,12 +271,12 @@
                             var jsonOBJ = JSON.parse(xhr.responseText);
 
                             if (jsonOBJ.result=="OK" ) {
-                                viewBoard(fid);	                        
+                                viewBoard(fid,forum);	                        
                                 alert(jsonOBJ.message);
                                 return;
                             }
                             if (jsonOBJ.result=="ERROR" ) {
-                                viewBoard(fid);	                        
+                                viewBoard(fid,forum);	                        
                                 alert(jsonOBJ.message);
                                 return;
                             }		
@@ -292,7 +301,7 @@
                             var jsonOBJ = JSON.parse(xhr.responseText);
 
                             if (jsonOBJ.result=="OK" ) {
-                                viewBoard(fid);                               	                        
+                                viewBoard(fid,forum);                               	                        
                                 alert(jsonOBJ.message);
                                 return;
                             }
@@ -306,7 +315,7 @@
             }    
         </script>
 		
-		<script>viewBoard(<?PHP echo $_SESSION['fid']?>, '<?PHP echo $first_forum;?>');</script>
+		<script>viewBoard(<?PHP echo $_SESSION['fid']?>, '<?PHP echo $_SESSION['forum']?>');</script>
  
     </body>
 </html>

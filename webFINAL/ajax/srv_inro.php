@@ -32,7 +32,6 @@ $row=$sth->fetchAll();
     if($nickname=="") $nickname ='還沒有人幫偶取綽號（；へ：）';
     if($features=="") $features ='偶還沒有自我介紹（；へ：）';
     if($characters=="")$characters ='沒有人紀錄（；へ：）';
-    if($socialmedia=="") $socialmedi ='沒有人紀錄（；へ：）';
     if($places=="") $places ='沒有人紀錄（；へ：）';
 
     //處理換行排版		 
@@ -57,11 +56,14 @@ $row=$sth->fetchAll();
     $str.="                <dt class='col-sm-3'>出沒地</dt>\n";
     $str.="                <dd class='col-sm-9'>$places</dd>\n";
     $str.="                <dt class='col-sm-3'>個人帳號</dt>\n";
-    $str.="                <dd class='col-sm-9'><a href='$socialmedia' target='_blank'><i class='fab fa-instagram fa-3x' ></i></a></dd>\n";
+    if($socialmedia=="")
+        $str.="            <dd class='col-sm-9'>沒有人紀錄（；へ：）</dd>\n";
+    else
+        $str.="            <dd class='col-sm-9'><a href='$socialmedia' target='_blank'><i class='fab fa-instagram fa-3x' ></i></a></dd>\n";
     $str.="            </dl>\n";
     $str.="        </div>\n";
     $str.="    </div>\n";
-    $str.="<div id='bar'>\n";   
+    $str.="<div \n";   
 
 echo $str;
 

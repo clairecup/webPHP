@@ -5,6 +5,11 @@
 		echo "<script>window.location.href='login.php'</script>";
 		exit;
 	}
+    // 如未指定目前的討論版, 將第一個fid當作預設,
+    if( !isset($_SESSION['fid'])  ) {
+        $fid = 1;
+        $_SESSION['fid'] = $fid;
+    }
 
     include "ajax/tools.php";
 
@@ -78,20 +83,23 @@
 	<div class="center">    
         <div class="center1">&nbsp;</div>
         <div class="center2">                    	    
-            <form name="form1">                
+            <div name="form1">                
                 <div class="form-group">
                     <label for="username"><b>標題</b></label>
                     <input type="text" class="form-control" id="title" placeholder="title" name="title">
                 </div>               
                 <!--textarea id="content" class="textarea" placeholder="content" name="content"></textarea-->
                 <div class="container">            
-                    <div class="row"></div>
-                        <label class="form-group col-sm-6">
-                            <span class="textarea-label"><b>文章內容</b></span>
-                            <textarea rows="1"  id="content" class="form-control js-elasticArea" placeholder="content"></textarea>
-                        </label>
-                        
+                    <span class="textarea-label"><b>文章內容</b></span>
+                    <textarea rows="1"  id="content" class="form-control js-elasticArea" placeholder="content"></textarea>        
                 </div>
+                <label for="file"><b>請提供照片: </b></label>
+                <form id="uploadForm" method="post" enctype="multipart/form-data" style="display:inner-flex;">
+                    <input type="file" name="file" style="flex:3;">
+                    <input type="button" value="上傳" onclick="upload();" style="flex:1;">                   
+                </form>
+                <center><span id = "upload result"></span></center>
+                <br>
                 <div class="form-group">
                     
                     你覺得<?PHP echo $forum;?>的狀態如何？&emsp;&emsp;
@@ -119,7 +127,7 @@
 						<td width="20%"></td> 
                     </tr>                   
                 </table>                
-            </form>            
+            </div>            
         </div>
         <div class="center3">&nbsp;</div>
     <div>
@@ -127,6 +135,7 @@
 
 
 <script>
+    var upIMG_URL;
     var mymap,marker,lat,lng;
     var count=0;
     var xhr;
@@ -224,6 +233,7 @@
         formData.append("lng", lng);
         formData.append("health", a);
         formData.append("feed", b);
+        formData.append("imageurl",upIMG_URL); 
 		
 		// 傳送資料到後端
         xhr.open("POST", "ajax/srv_post.php");
@@ -236,9 +246,9 @@
 
 				// 更新失敗
 				if (jsonOBJ.result=="ERROR" ) {
+                    alert(jsonOBJ.message);
 					var field = jsonOBJ.field;
-					document.getElementById(field).focus();
-					alert(jsonOBJ.message);
+					document.getElementById(field).focus();					
 					return;
 				}
 				
@@ -253,6 +263,49 @@
         }
 		
 	}
+
+    function upload(){
+        var formData = new FormData(document.getElementById('uploadForm'));
+        var xhr = new XMLHttpRequest();
+        xhr.upload.addEventListener('progress', function(e){
+            console.log(e.loaded, e.total);
+        });
+        xhr.upload.addEventListener('load', function(){
+            console.log('File Uploaded');
+        });
+        xhr.upload.addEventListener('error', function(){
+            console.log('Error.');
+        });
+        xhr.upload.addEventListener('abort', function(){
+            console.log('Aborted.');
+        });
+        xhr.addEventListener('readystatechange', function(e){
+            if(e.target.readyState == 4 && e.target.status == 200){
+                console.log(e.target.responseText);
+            }
+        });
+        xhr.open('POST', 'upfile.php');
+        xhr.send(formData);
+
+        xhr.onreadystatechange=function() {
+            if (xhr.readyState==4 && xhr.status==200) {
+                var jsonOBJ = $.parseJSON(xhr.responseText);
+                //var jsonOBJ = JSON.parse(xhr.responseText);
+                // 更新失敗
+				if (jsonOBJ.result=="OK" ) {
+                    document.getElementById("upload result").innerHTML = jsonOBJ.message;
+                    upIMG_URL = jsonOBJ.url;  
+					return;
+				}				
+				// 更新成功
+				if (jsonOBJ.result=="ERROR" ) {
+					alert(jsonOBJ.message);
+					return;
+				}
+          
+            }
+        }
+    }
 </script>
 
 </body>

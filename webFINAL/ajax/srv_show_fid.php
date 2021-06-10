@@ -17,7 +17,7 @@
               FROM $TABLENAME as f 
               LEFT JOIN member as m
                 ON f.uid=m.uid
-            ORDER BY f.mid";
+            ORDER BY f.mid DESC";
 
 	$sth = $db->prepare($sql);
     $sth->execute();	
@@ -39,7 +39,7 @@
 		$content = str_replace("\n", "<br>", $content);
 		
 		// 組出 討論區 區塊內容
-		$str.="<div id='discuss_".$n.">\n";
+		$str.="<div id='discuss_".$n."' tabindex='$n'>\n";
 		$str.="    <div class='discuss-body'>\n";
 		$str.="        <div class='card'>\n";
 		$str.="            <div class='card-header'>\n";
@@ -127,7 +127,7 @@
 		$str.="             </div>\n";
         $str.="        </div>\n";
         $str.="    </div>\n";
-        $str.="</div>\n";
+        //$str.="</div>\n";
 		$n++;
 		}
 		
