@@ -141,7 +141,8 @@
         // 判斷有無新增圖片，將輸入的資料 新增至 資料庫forum
         if( $imageurl!="undefined" ) {
             $oriPath = ".".$imageurl;
-            $newPath = str_replace("./uploadFile/","../images/", $imageurl);
+            $change =  "./uploadFile".$_SESSION['dir']."/";
+            $newPath = str_replace( $change,"../images/", $imageurl);
             //echo "$oriPath $newPath";
             if(rename($oriPath, $newPath)){        
                 //成功移動檔案

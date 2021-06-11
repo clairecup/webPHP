@@ -8,13 +8,15 @@
     }
 
     $whiteList = array('jpg', 'png','jpeg','gif');    
-    $newDir = "./uploadFile/";
-    //$newDir = mkdir("./dirname", 0700);
+    //$newDir = "./uploadFile/";
+    $newDir = "./uploadFile".$_SESSION['dir']."/";
+    if( !file_exists($newDir))
+        mkdir($newDir , 0700);
 
     if($_FILES["file"]["name"] != NULL){
         // explode: 切割字串, end: 取最後一個結果
         $extension = @strtolower(end(explode(".", $_FILES["file"]["name"])));
-        if( in_array($extension, $whiteList) && $_FILES["file"]["size"] <= 3096 * 3096){
+        if( in_array($extension, $whiteList) && $_FILES["file"]["size"] <= 2048 * 2048){
             if( !in_array($extension, $whiteList) ){
                 $resultStr = "檔案類型錯誤!!，僅接受jpg、png、jpeg、gif 四種格式";
                 echo json_encode( array("result" => "ERROR", "message"=>$resultStr ) );               

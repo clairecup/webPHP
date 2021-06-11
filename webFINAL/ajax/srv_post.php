@@ -41,11 +41,13 @@
 
 	if( $imageurl!="undefined" ) {
 		$oriPath = ".".$imageurl;
-		$newPath = str_replace("./uploadFile/","../images/", $imageurl);
+		$change =  "./uploadFile".$_SESSION['dir']."/";
+		$newPath = str_replace( $change,"../images/", $imageurl);
 		//echo "$oriPath $newPath";
+		
 		if(rename($oriPath, $newPath)){        
-			//成功移動檔案
-			$dir="../uploadFile/";
+			//移動檔案之後，刪除該檔案和目錄
+			$dir= "../uploadFile".$_SESSION['dir']."/";
 			$files = glob($dir.'*');
 			foreach ($files as $file) 
 				@unlink($file);

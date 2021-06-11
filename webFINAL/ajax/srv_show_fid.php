@@ -81,7 +81,7 @@
 		$str.="                <p class='card-text'>$content</p>\n";
 
 		if($img != "")
-			$str.="            <img src='$img'>\n";
+			$str.="            <img class='card-img' src='$img'>\n";
 
         $str.="           </div>\n";        
 

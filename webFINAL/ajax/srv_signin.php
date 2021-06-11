@@ -50,7 +50,8 @@
 	// 寫入 session
 	session_start();
 	$_SESSION['uid'] = $uid;
-	$_SESSION['nickname'] = $nickname;
+	$_SESSION['nickname'] = $nickname;	
+	$_SESSION['dir'] = $uid.strval(rand(1,100));
 
 	//-----------------------------------------------
 	// 檢查 admin table 看是否為管理者
