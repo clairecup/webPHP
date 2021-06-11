@@ -13,7 +13,7 @@
 	// 從資料庫中 找出看板的標題
 	$TABLENAME = "message".$_SESSION['fid'];
 	$RESPONAME = "respon".$_SESSION['fid'];
-	$sql = "SELECT f.mid,f.uid,f.title,f.content,f.time,f.longitude,f.latitude, f.health, f.feed, m.nickname
+	$sql = "SELECT f.mid,f.uid,f.title,f.content,f.time,f.longitude,f.latitude, f.health, f.feed,f.imageurl , m.nickname
               FROM $TABLENAME as f 
               LEFT JOIN member as m
                 ON f.uid=m.uid
@@ -34,6 +34,8 @@
 		$feed     = $row["feed"];
 		$nickname = $row["nickname"];
 		$time     = $row['time'];
+		$img      = $row['imageurl'];
+		//$img      = $row['imageurl'];
 
 		//處理換行排版		 
 		$content = str_replace("\n", "<br>", $content);
@@ -77,6 +79,10 @@
 		$str.="            </div>\n";		
 		$str.="            <div class='card-body'>\n";		
 		$str.="                <p class='card-text'>$content</p>\n";
+
+		if($img != "")
+			$str.="            <img src='$img'>\n";
+
         $str.="           </div>\n";        
 
 

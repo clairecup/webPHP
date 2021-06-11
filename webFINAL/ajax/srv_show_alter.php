@@ -104,9 +104,6 @@
         $href          = check_input($_POST['href'] );
         $imageurl      = $_POST['imageurl'];
         
-		if( $imageurl=="undefined" ) {
-			$imageurl="images/defalt.png";
-		}
 		
         if( $forum=="" ) {
             echo json_encode( array("result" => "ERROR", "message"=>"請填寫[新動物名稱]", "field"=>"new_forum_name" ) );
@@ -141,10 +138,31 @@
             echo($errors[2]);
         }
 
-        // 將輸入的資料 新增至 資料庫forum
-        $sql = "INSERT INTO forum (forum, animal, introduce, nickname, features, characters, places, socialmedia, imageurl)";
-        $sql.= " VALUES(:forum,:animal,:introduce,:nickname,:features,:characters,:places,:socialmedia, :imageurl)";
-        $sth = $db->prepare($sql);
+        // 判斷有無新增圖片，將輸入的資料 新增至 資料庫forum
+        if( $imageurl!="undefined" ) {
+            $oriPath = ".".$imageurl;
+            $newPath = str_replace("./uploadFile/","../images/", $imageurl);
+            //echo "$oriPath $newPath";
+            if(rename($oriPath, $newPath)){        
+                //成功移動檔案
+                $dir="../uploadFile/";
+                $files = glob($dir.'*');
+                foreach ($files as $file) 
+                    @unlink($file);
+                $imageurl = str_replace("../","./", $newPath);
+                $sql = "INSERT INTO forum (forum, animal, introduce, nickname, features, characters, places, socialmedia, imageurl)";
+                $sql.= " VALUES(:forum,:animal,:introduce,:nickname,:features,:characters,:places,:socialmedia, :imageurl)";
+                $sth = $db->prepare($sql);
+                $sth->bindParam(':imageurl'   , $imageurl    , PDO::PARAM_STR);                   
+                
+            }
+        }
+        else{
+            $sql = "INSERT INTO forum (forum, animal, introduce, nickname, features, characters, places, socialmedia )";
+            $sql.= " VALUES(:forum,:animal,:introduce,:nickname,:features,:characters,:places,:socialmedia)";
+            $sth = $db->prepare($sql);	
+        }
+
 
 		$sth->bindParam(':forum'      , $forum       , PDO::PARAM_STR);
 		$sth->bindParam(':animal'     , $animalType  , PDO::PARAM_STR);
@@ -154,7 +172,6 @@
 		$sth->bindParam(':characters' , $characters  , PDO::PARAM_STR);
 		$sth->bindParam(':places'     , $places      , PDO::PARAM_STR);
 		$sth->bindParam(':socialmedia', $href        , PDO::PARAM_STR);
-        $sth->bindParam(':imageurl'   , $imageurl    , PDO::PARAM_STR);
 
         $sth->execute(); 
 		

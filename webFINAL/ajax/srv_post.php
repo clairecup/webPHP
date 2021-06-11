@@ -40,27 +40,27 @@
 	$ip        = $_SERVER['REMOTE_ADDR'];
 
 	if( $imageurl!="undefined" ) {
-		$newPath =  str_replace("./uploadFile/", "./images/", $imageurl);
-		if(rename( $imageurl, $newPath)){
-			//成功移動檔案，刪除 uploadFile 裡面的其他檔案
-			$dir="./uploadFile/";
+		$oriPath = ".".$imageurl;
+		$newPath = str_replace("./uploadFile/","../images/", $imageurl);
+		//echo "$oriPath $newPath";
+		if(rename($oriPath, $newPath)){        
+			//成功移動檔案
+			$dir="../uploadFile/";
 			$files = glob($dir.'*');
 			foreach ($files as $file) 
-			if(@unlink($file)){
-				$sql="INSERT INTO $TABLENAME (uid,title,content,longitude, latitude,health, feed, imageurl,ip) values(?,?,?,?,?,?,?,?,?)";//將需要過濾的欄位以?代替
-				$arr=array($uid, $title, $content, $lng, $lat, $health, $feed, $newPath, $ip);
-			}else{
-				echo json_encode( array("result"=>"ERROR","message"=>"刪除檔案".$file."失敗","field"=>"uploadForm"));
-				exit;
-			}
-		}else{
-			echo json_encode( array("result" => "ERROR", "message"=>"移動檔案失敗", "field"=>"uploadForm" ) );
-			exit;
+				@unlink($file);
+			$imageurl = str_replace("../","./", $newPath);
+			$sql="INSERT INTO $TABLENAME (uid,title,content,longitude, latitude,health, feed, imageurl,ip) values(?,?,?,?,?,?,?,?,?)";//將需要過濾的欄位以?代替
+			$arr=array($uid, $title, $content, $lng, $lat, $health, $feed, $imageurl, $ip);
+				
+			
 		}
-	}else{
+	}
+	else{
 		$sql = "INSERT INTO $TABLENAME (uid,title,content,longitude, latitude,health, feed, ip) values(?,?,?,?,?,?,?,?)";//將需要過濾的欄位以?代替
 		$arr = array($uid, $title, $content, $lng, $lat, $health, $feed, $ip);	
 	}
+
 	
 	$sth = $db->prepare($sql);
 	$result = $sth->execute($arr);  //以字串陣列傳入
@@ -75,11 +75,4 @@
 		echo json_encode( array("result" => "ERROR", "message"=>"貼文失敗\n\n", "field"=>"title" ) );
 	}
 
-	function delTree($dir) {
-		$files = array_diff(scandir($dir), array('.','..'));
-		foreach ($files as $file) {
-				(is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file");
-		}
-		return rmdir($dir);
-	}
 ?>

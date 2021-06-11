@@ -475,9 +475,9 @@
                     <label for="file">請提供照片: </label>
                     <form id="uploadForm" method="post" enctype="multipart/form-data" style="display:flex;">
                         <input type="file" name="file" style="flex:3;">
-                        <input type="button" value="Upload" onclick="upload();" style="flex:1;">                   
+                        <input type="button" value="上傳" onclick="upload();" style="flex:1;">                   
                     </form>
-                    <center><span id = "upload result"></span></center>
+                    <center><span id="upload result"></span></center>
                     <br>
                     <label for="feature">請輸入特徵：</label>
                     <input type="text"  class="form-control" id="feature" name="feature" placeholder="特徵">
@@ -587,7 +587,49 @@
                     document.getElementById("discussDiv").innerHTML = xhr.responseText;
                 }
             }
-        }          
+        } 
+        function upload(){
+            var formData = new FormData(document.getElementById('uploadForm'));
+            var xhr = new XMLHttpRequest();
+            xhr.upload.addEventListener('progress', function(e){
+                console.log(e.loaded, e.total);
+            });
+            xhr.upload.addEventListener('load', function(){
+                console.log('File Uploaded');
+            });
+            xhr.upload.addEventListener('error', function(){
+                console.log('Error.');
+            });
+            xhr.upload.addEventListener('abort', function(){
+                console.log('Aborted.');
+            });
+            xhr.addEventListener('readystatechange', function(e){
+                if(e.target.readyState == 4 && e.target.status == 200){
+                    console.log(e.target.responseText);
+                }
+            });
+            xhr.open('POST', 'upfile.php');
+            xhr.send(formData);
+
+            xhr.onreadystatechange=function() {
+                if (xhr.readyState==4 && xhr.status==200) {
+                    var jsonOBJ = $.parseJSON(xhr.responseText);
+                    //var jsonOBJ = JSON.parse(xhr.responseText);
+                    // 上傳成功
+                    if (jsonOBJ.result=="OK" ) {
+                        document.getElementById("upload result").innerHTML = jsonOBJ.message;
+                        upIMG_URL = jsonOBJ.url;  
+                        return;
+                    }				
+                    // 上傳失敗
+                    if (jsonOBJ.result=="ERROR" ) {
+                        alert(jsonOBJ.message);
+                        return;
+                    }
+            
+                }
+            }
+        }         
     </script>
 </html>
 

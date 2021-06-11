@@ -123,7 +123,7 @@
                     <tr>
 						<td width="20%"></td>                        
                         <td width="30%" align="center" ><button type="button" class="btn-primary" onclick='add()'>新增</button></td>
-						<td width="30%" align="center" ><button type="button" onclick="history.back()">取消</button></td>
+						<td width="30%" align="center" ><button type="button" onclick="window.history.back()">取消</button></td>
 						<td width="20%"></td> 
                     </tr>                   
                 </table>                
@@ -256,7 +256,7 @@
 				if (jsonOBJ.result=="OK" ) {
 					var url = jsonOBJ.url;
 					alert(jsonOBJ.message);
-					window.location.href = url;
+					window.history.back();
 					return;
 				}
             }
@@ -291,13 +291,13 @@
             if (xhr.readyState==4 && xhr.status==200) {
                 var jsonOBJ = $.parseJSON(xhr.responseText);
                 //var jsonOBJ = JSON.parse(xhr.responseText);
-                // 更新失敗
+                // 上傳成功
 				if (jsonOBJ.result=="OK" ) {
                     document.getElementById("upload result").innerHTML = jsonOBJ.message;
                     upIMG_URL = jsonOBJ.url;  
 					return;
 				}				
-				// 更新成功
+				// 上傳失敗
 				if (jsonOBJ.result=="ERROR" ) {
 					alert(jsonOBJ.message);
 					return;

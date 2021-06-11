@@ -315,7 +315,7 @@
             }    
         </script>
 		
-		<script>viewBoard(<?PHP echo $_SESSION['fid']?>, '<?PHP echo $_SESSION['forum']?>');</script>
+		<script>viewBoard(<?PHP echo $_SESSION['fid']?>);</script>
  
     </body>
 </html>

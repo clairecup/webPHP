@@ -7,8 +7,9 @@
         exit;
     }
 
-    $whiteList = array('jpg', 'png','jpeg','gif');
+    $whiteList = array('jpg', 'png','jpeg','gif');    
     $newDir = "./uploadFile/";
+    //$newDir = mkdir("./dirname", 0700);
 
     if($_FILES["file"]["name"] != NULL){
         // explode: 切割字串, end: 取最後一個結果

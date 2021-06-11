@@ -1,4 +1,5 @@
 //for index and discuss
+//彈性textarea
 (function() {
     'use strict';
     function elasticArea() {
@@ -20,7 +21,9 @@
     //Init function in the view
     elasticArea();
     })();
-var upIMG_URL
+
+
+var upIMG_URL;
 var xhr;
 // 設定物件
 if(window.ActiveXObject){
@@ -95,14 +98,23 @@ function upload(){
 
     xhr.onreadystatechange=function() {
         if (xhr.readyState==4 && xhr.status==200) {
-            var jsonOBJ = JSON.parse(xhr.responseText);
-            //var jsonOBJ = $.parseJSON(xhr.responseText);
-            document.getElementById("upload result").innerHTML = jsonOBJ.result;
-            upIMG_URL = jsonOBJ.url;
-                    
+            var jsonOBJ = $.parseJSON(xhr.responseText);
+            //var jsonOBJ = JSON.parse(xhr.responseText);
+            // 上傳成功
+            if (jsonOBJ.result=="OK" ) {
+                document.getElementById("upload result").innerHTML = jsonOBJ.message;
+                upIMG_URL = jsonOBJ.url;  
+                return;
+            }				
+            // 上傳失敗
+            if (jsonOBJ.result=="ERROR" ) {
+                alert(jsonOBJ.message);
+                return;
+            }
+    
         }
     }
-}
+} 
 //新增看板名稱
 function new_forum(){                
     var forum_name = document.getElementById("new_forum_name").value;
