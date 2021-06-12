@@ -202,8 +202,8 @@
 				}
                 if (jsonOBJ.result=="OK" ) {					
 					alert(jsonOBJ.message);										
-                    document.getElementsByClassName("mask")[0].style.display="none";
                     show();
+                    del_new_admin();
                     return;
 				}
 
