@@ -21,7 +21,7 @@
 	// 產出討論版區塊
 	//---------------------------------
     $record=[];
-	$sth = $db->prepare("SELECT fid,forum,imageurl,iconurl FROM forum ORDER BY fid");
+	$sth = $db->prepare("SELECT fid,forum,imageurl,iconurl,mapIcon FROM forum ORDER BY fid");
     $sth->execute();
 	$board_str = "";
     if( isset($_SESSION['admin']) && $_SESSION['admin']==0 ){
@@ -29,6 +29,7 @@
                             <center><button onclick='show_new_forum()'><span class='icon-plus'></span></button><center>
                         </td></tr>  \n";
     }
+
     $marker ="";
     
 	while( ($row=$sth->fetch()) ) {
@@ -36,6 +37,7 @@
 		$forum    = $row["forum"];
         $imageurl = $row["imageurl"];
         $iconurl  = $row["iconurl"];
+        $mapIcon  = $row["mapIcon"];
        
         $board_str.= "<tr height=32px><td width=100%>\n"; 
         //$board_str.= "<a onclick=\"viewBoard($fid,'$forum')\"><img id='icon' class='img-thumbnail'  src='$iconurl'></a>\n";
@@ -52,21 +54,36 @@
         $dbh->exec("set names utf8");
         $sth1 = $dbh->query("SELECT * FROM $TABLENAME");
 
-        $iconid = $fid;
-        if($fid>=4)$iconid=4;        
+        //$iconid = $fid;
+        //if($fid>=4)$iconid=4;
+        $n = 0;        
         while($row = $sth1->fetch(PDO::FETCH_ASSOC)){
             $mid = $row['mid'];
             $uid = $row['uid'];
             $title = $row['title'];
             $time = $row['time'];
             $longitude = $row['longitude'];
-            $latitude = $row['latitude']; 
-            $marker.= "var marker$mid = L.marker([".$latitude.", ".$longitude."], {icon: AnimalIcon$iconid}).addTo(markers)";
-            $marker.= ".bindPopup(\"<p class=InfoTitle onclick=toDiscuss($fid,'$forum',$mid)>$forum</p>";
+            $latitude = $row['latitude'];
+             
+            $marker.= "var marker".$fid.$mid." = L.marker([".$latitude.", ".$longitude."], {icon:L.icon({";
+            $marker.= "iconUrl: '$mapIcon',";
+            if($n == 0){
+                $marker.= "iconSize: [50, 50],";
+                $marker.= "className: 'blinking'})";
+                $n++;
+            }
+            else{
+                $marker.= "iconSize: [30, 30]})";
+                //$marker.= "className: 'blinking'})";
+            }
+
+            $marker.= "}).addTo(mymap).bindPopup(";
+            $marker.= "\"<p class=InfoTitle onclick=toDiscuss($fid,'$forum',$mid)>".$forum."</p>";
             $marker.= "<p class=info>回報文章：".$title."</p>";
             $marker.= "<p class=info>回報者ID：".$uid."</p>";
             $marker.= "<p class=info>活動時間：".$time."</p>\");\n";
             //$marker.= ".bindPopup('<p class=InfoTitle><b>$forum </b></p><p class=info><a>回報文章：".$title."</a></p><p class=info>回報者ID：".$uid."</p><p class=info>活動時間：".$time."</p>');";
+            
         }
 
 	}      
@@ -103,32 +120,8 @@
             ).addTo(mymap);
 
             /*使用插件Marker Clustering*/
-            var markers = L.markerClusterGroup();
-            mymap.addLayer(markers);
-
-            /*宣告自定義的marker圖示*/
-            var AnimalIcon1 = L.icon({
-                iconUrl: 'images/AnimalIcon1.png',
-                iconSize: [50, 50],
-                className: 'blinking'
-            });
-
-            var AnimalIcon2 = L.icon({
-                iconUrl: 'images/AnimalIcon2.png',
-                iconSize: [50, 50],
-                className: 'blinking'
-            });
-
-            var AnimalIcon3 = L.icon({
-                iconUrl: 'images/AnimalIcon3.png',
-                iconSize: [50, 50],
-                className: 'blinking'
-            });
-            var AnimalIcon4 = L.icon({
-                iconUrl: 'images/defalt.png',
-                iconSize: [50, 50],
-                className: 'blinking'
-            });
+            //var markers = L.markerClusterGroup();
+            //mymap.addLayer(markers);
 
             /*設定每塊區域的邊界及popup視窗*/
             var boundary1 = [{
@@ -378,6 +371,8 @@
 
             L.geoJson(boundary19).addTo(mymap).bindPopup('<p class="boundary">區域Ｓ</p>');
             <?PHP echo $marker;?> 
+
+            
         }           
         </script>
         <style>
