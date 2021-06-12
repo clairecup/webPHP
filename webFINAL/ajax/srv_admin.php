@@ -55,7 +55,7 @@ function show() {
     if( $_SESSION['admin']!=0 )
         $sql .= "\nWHERE a.fid in( ".$_SESSION['admin']." )";
     
-    $sql .= "\nORDER BY a.fid";
+    $sql .= "\nORDER BY a.uid";
     //echo $sql;
     //exit;
     $sth = $db->prepare($sql);    

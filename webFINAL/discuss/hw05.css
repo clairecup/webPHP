@@ -1,0 +1,542 @@
+html, body{
+    height: 100%; 
+    margin: 0;
+    font-family:微軟正黑體,Arial, Helvetica, sans-serif;
+    background-color: #B4D0C7;
+    color: #4D4D4D;
+    margin:0;
+    padding:0;             
+    }   
+    
+    Ul {
+        list-style: none;
+    }
+
+    /*icon font*/    
+    @font-face {
+        font-family: 'icomoon';
+        src:  url('fonts/icomoon.eot?pd8qv7');
+        src:  url('fonts/icomoon.eot?pd8qv7#iefix') format('embedded-opentype'),
+          url('fonts/icomoon.ttf?pd8qv7') format('truetype'),
+          url('fonts/icomoon.woff?pd8qv7') format('woff'),
+          url('fonts/icomoon.svg?pd8qv7#icomoon') format('svg');
+        font-weight: normal;
+        font-style: normal;
+        font-display: block;
+      }
+      
+      [class^="icon-"], [class*=" icon-"] {
+        /* use !important to prevent issues with browser extensions that change fonts */
+        font-family: 'icomoon' !important;
+        speak: never;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        
+        /* Enable Ligatures ================ */
+        letter-spacing: 0;
+        -webkit-font-feature-settings: "liga";
+        -moz-font-feature-settings: "liga=1";
+        -moz-font-feature-settings: "liga";
+        -ms-font-feature-settings: "liga" 1;
+        font-feature-settings: "liga";
+        -webkit-font-variant-ligatures: discretionary-ligatures;
+        font-variant-ligatures: discretionary-ligatures;
+      
+        /* Better Font Rendering =========== */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      .icon-pencil2:before {
+        content: "\e906";
+      }
+      .icon-user:before {
+        content: "\e971";
+        font-size: 20px;
+      }
+      .icon-user-plus:before {
+        content: "\e973";
+      }
+      .icon-user-minus:before {
+        content: "\e974";
+      }
+      .icon-plus:before {
+        content: "\ea0a";
+      }
+      .icon-cross:before {
+        content: "\ea0f";
+      }
+      
+
+   
+    /*超連結*/
+    .a{
+        padding: 10px;
+        margin-right: 10px;
+    }   
+    .a:link{
+    /*設定還沒有瀏覽過的連結*/
+    color: #4D4D4D; 
+    text-decoration: none;            
+    }
+    .a:visited {
+    /*設定已經瀏覽過的連結*/
+    color: #4D4D4D; 
+    text-decoration: none;                       
+    }
+    .a:hover {
+    /*設定滑鼠移經的連結*/
+    border-style: solid;
+    border-width: 2px;
+    border-color: #4D4D4D;
+    border-radius: 10px;
+    }
+
+    .title_href{
+        padding:10px;
+        padding-bottom:3px;
+        margin-right: 0px;
+    }
+    .title_href:link{
+        /*設定還沒有瀏覽過的連結*/
+        color: #4D4D4D; 
+        text-decoration: none;            
+        }
+    .title_href:visited {
+        /*設定已經瀏覽過的連結*/
+        color: #4D4D4D; 
+        text-decoration: none;                       
+    }
+    .title_href:hover {
+        /*設定滑鼠移經的連結*/
+        border-style: solid;
+        border-width: 2px;
+        border-color: #4D4D4D;
+        border-radius: 10px;
+    }
+
+
+    /*頁面頂端布局*/
+    #header{      
+        width:100%;
+        height:10%;
+        background-color: #9BC0B6;
+        position: fixed;
+        top:0;
+        display: flex;
+        flex-flow: row;
+        align-items: flex-start;
+                     
+    }       
+    #header ul li {              
+        display: inline; 
+        list-style: none;             
+    }
+    #h_left{
+        flex: 2;
+        padding-left:30px;
+        padding-top:25px;
+    }
+   
+    #h_mid{
+        flex: 5;        
+    }
+    #h_right{
+        flex: 2;        
+        text-align: right;
+        align-items: center; 
+        margin-top: 30px; 
+    }   
+    
+    /*首頁切板*/
+    #box{
+        margin-top: 50px;
+        padding-top: 50px;
+        display: flex;        
+        flex-flow: row;                
+                                      
+    }  
+    .board{
+        flex: 2;
+        padding: 10px;                        
+    }
+    .discuss{
+        flex: 7;                
+        background-color: #FFFFFF;
+        border-radius: 5px;
+        padding: 10px;
+        height: 100%;               
+        
+    }     
+    .right{
+        flex: 1;                
+    }   
+    
+    /*登入、註冊、修改、po文切板*/
+    .center{
+        margin-top: 20px;
+        padding-top: 20px;
+        display:flex;               
+    }
+    .center1{
+        flex:3;
+    }
+    .center2{
+        flex:5;
+        background-color:rgba(77,77,77,0.35);
+        margin:50px;
+        margin-bottom:0px;
+        padding: 50px;
+        width: 50%;
+        height: 50%;
+        border-radius: 15px; 
+        text-align: left; 
+    }
+    .center3{
+        flex:3;
+    }
+
+     /*管理切板*/
+     .ad_center{
+        margin-top: 20px;
+        padding-top: 20px;
+        display:flex;               
+    }
+    .ad_center1{
+        flex:1;
+    }
+    .ad_center2{
+        flex:90;
+        background-color:rgba(77,77,77,0.35);
+        margin:50px;
+        margin-bottom:0px;
+        padding: 50px;        
+        border-radius: 15px; 
+        text-align: left; 
+    }
+    .ad_center3{
+        flex:1;
+    }
+    .ad_table{
+        width: 100%;
+        border:3px rgba(77,77,77,0.55) solid;        
+        border-collapse:collapse;
+        text-align: center; 
+    }
+    
+    
+    
+    
+    input {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;        
+        border: 2px solid rgba(77,77,77,0.35);        
+        border-radius: 10px;
+        
+      }
+    input[type=radio]{
+        margin: 10px 0px;
+        padding:0;
+        width:auto;
+        margin-right: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        width: 15px;
+        height: 12px;
+        position: relative;
+    }
+    input[type=radio]:after {
+        position: absolute;
+        width: 10px;
+        height: 15px;
+        top: 0;
+        content: " ";
+        background-color: #323829;
+        color: #fff;
+        display: inline-block;
+        visibility: visible;
+        padding: 0px 3px;
+        border-radius: 50%;
+    }
+    input[type=radio]:checked:after {
+        content: "✓";
+        font-size: 12px;
+      }
+    
+    input[type=button]:hover {
+        background-color:rgba(77,77,77,0.35);
+        color: #FFFFFF;
+    }
+    
+    .form-control{
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;        
+        border: 2px solid rgba(77,77,77,0.35);        
+        border-radius: 10px;
+    }
+    .form-control:focus{
+        border: 2px solid rgba(43, 89, 195,0.35); 
+        box-shadow:0 0 2px 0 rgba(43, 89, 195,.5),inset 0 0 5px 0 rgba(43, 89, 195,.5);
+    }
+    /*textarea彈性高度*/
+    .container {
+        max-width: 1000px;
+        margin: 10px 0;
+      }     
+    .form-group textarea {         
+        border: none;
+        border-radius: 10px;
+        box-shadow: none;
+        border: 2px solid rgba(77,77,77,0.35);
+        padding: 10px 0;
+        padding-left: 20px;
+        min-height: 45px;
+        outline: none;
+        resize: none;
+    }    
+    .form-group textarea:focus {
+        border: 2px solid rgba(43, 89, 195,0.35); 
+        box-shadow:0 0 2px 0 rgba(43, 89, 195,.5),inset 0 0 5px 0 rgba(43, 89, 195,.5);
+    }
+
+    
+    /*按鈕*/
+    button {
+        padding: 15px;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        background-color:#B4D0C7;
+        border-radius: 10px;        
+    }
+    
+    button:hover {
+        background-color: #4CAF50; /* Green */
+        color: white;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }    
+    .btn-word {
+        background-color:rgba(77,77,77,0);
+        border:none;
+        outline:none;
+    }
+    .btn-word:hover {
+        background-color:rgba(77,77,77,0.35);
+        color: #FFFFFF;
+
+    }
+    
+    /*討論板*/
+    .discuss{
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .discuss-header{
+        padding-bottom: 15px;
+        padding-left: 10px;
+        margin-bottom: 30px;
+        margin-left:0px;
+        border-bottom: solid 5px #EBEFF1;
+        display: flex;
+    } 
+    
+    #imgDiv{
+        height: 50px;      /* Equals maximum image height */
+        line-height: 50px;         
+    }
+    .imgD{
+        max-height: 50px;
+        max-width: 50px;
+        padding-right: 10px;
+    }
+
+    /*每則留言*/
+    .card{
+        /*border-top: solid 5px #EBEFF1; */
+        display:grid;
+        border: 2px solid gray;
+        border-radius: 15px;
+        margin:10px;
+        padding:30px
+
+    }
+    .card:hover{       
+        border: 2px solid rgba(43, 89, 195,0.35); 
+        box-shadow:0 0 2px 0 rgba(43, 89, 195,.5),inset 0 0 5px 0 rgba(43, 89, 195,.5);
+    }
+    .card-text{
+        padding-bottom: 15px;
+        border-bottom: solid 2px #EBEFF1;
+    }
+    .card-header-title{
+        display:flex;
+        justify-content: space-between;
+    }
+    .card-header-title1{
+        flex:2;
+    }
+    .card-header-title1{
+        flex:1;
+    }
+    .card-header-user{
+        margin-bottom: 10px;
+        font-size: 10px;
+        color:rgba(77,77,77,0.7);
+    }
+    .replybody{
+        display:flex;
+        flex-direction :column;
+
+    }
+    .replytext{
+        display:flex;
+        flex-direction :row;
+    }    
+    .replytext1{
+        flex:1;
+        margin: 8px 0px 8px 8px;
+        padding: 12px 0px 12px 12px;        
+    }
+    .replytext2{
+        flex:15;
+    }
+    .replytext3{
+        flex:1;
+    }
+    .replycontent{        
+        display:flex;
+        flex-direction :row;
+        justify-content: space-around;
+        color:rgba(77,77,77,0.6);
+        border-color: rgba(77,77,77,0.3);;        
+    }
+    .replycontent0{
+        flex:1;
+    }
+    .replycontent1{
+        flex:3;
+        border: dotted;
+        padding-bottom: 0px;        
+    }    
+
+    .replycontent2{
+        padding-left: 10px;        
+        flex:10;
+        border: dotted;
+    }
+    .replycontent3{
+        flex:1;
+        border: dotted;
+        border-radius:0px;
+    }
+        
+    /*tags，source: https://codepen.io/arnpatel/pen/QWpjJxj */
+    .tags {
+        font-size: 9px ;
+        margin: 14px;
+        list-style: none;
+        margin: 0;
+        overflow: hidden; 
+        padding: 0;
+      }
+      
+      .tags li {
+        float: left; 
+      }
+      
+      .tag {
+        background: #eee;
+        border-radius: 3px 0 0 3px;
+        color: #999;
+        display: inline-block;
+        height: 14px;
+        line-height: 14px;
+        padding: 0 20px 0 23px;
+        z-index: 600;
+        margin: 0 10px 10px 0;
+        text-decoration: none;
+        -webkit-transition: color 0.2s;
+      }
+    
+      /*map*/
+      .mapicon{
+        vertical-align:bottom;
+        max-height: 30px;
+        max-width: 30px;
+      }
+      /*遮罩*/
+      .mask {
+        width: 100%;
+        /*height: 500px;*/
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        background: rgba(0,0,0,0.5);        
+      }
+
+      .new_mask {
+        width: 400px;
+        height: 450px;
+        position: fixed;
+        top: 100px;
+        left: 300px;
+        background: rgba(255,255,255,0.9);
+        z-index: 999;
+        font-weight: bolder;
+        font-size: 20px;
+        line-height: 40px;
+        text-align: center;
+        border-radius: 15px;
+        margin:100px auto 0px auto;
+        padding:20px;
+        }
+
+    .new_mask p{
+        padding-left:50px;
+        padding-bottom: 0px;
+        text-align: left;
+    }
+
+    /*select*/
+    .selectBox{
+        text-align: left;
+        margin-left:70px;
+    }
+    .select{
+        height: 20px;
+        text-align: left;
+        border:none;
+        width: 70%;
+        background: rgba(255,255,255,0.9);
+        border-radius: 3px;        
+    }
+    .select:focus{
+        border: 2px solid rgba(43, 89, 195,0.35); 
+        box-shadow:0 0 2px 0 rgba(43, 89, 195,.5),inset 0 0 2px 0 rgba(43, 89, 195,.5);
+    }
+
+
+
+
+    
+
+
+
+    
+   
+   
+   
+    
+   
+    
+
+
+      
+    

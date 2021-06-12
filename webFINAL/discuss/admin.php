@@ -16,15 +16,15 @@
 </head>
 <body>
     <div id="header">
-            <div id="h_left">
-                <button class="btn-word" onclick="location.href='<?PHP echo $HOME_URL?>';"><i class="fas fa-home fa-2x"></i></button>
-                <button class="btn-word" onclick="location.href='<?PHP echo $DISCUSS_URL?>';"><i class="fas fa-comments fa-2x"></i></button>                              
-            </div>           
+            <span id="h_left">
+                <a href="#" class="title_href" class='a'><i class="fas fa-map-marked-alt fa-2x"></i></a>
+                <a href="<?PHP echo $HOME_URL;?>" class="title_href" class='a'><i class="fas fa-comments fa-2x"></i></a>                
+            </span>           
             <span id="h_mid"><h1 align="center">管理</h1></span>
 			<span id="h_right">&nbsp;</span>              
     </div> 
     <div class="mask">
-        <form class="new_thing">
+        <form class="new_mask">
             新增管理員：
             <p>1.選擇使用者：</p>            
             <div class="selectBox">                
@@ -82,17 +82,17 @@
     }    
 
     var mask = document.getElementsByClassName('mask')[0];
-    var new_thing = document.getElementsByClassName("new_thing")[0];
+    var new_mask = document.getElementsByClassName("new_mask")[0];
     //一開始隱藏遮罩
     mask.setAttribute("hidden", "hidden");
-    new_thing.setAttribute("hidden", "hidden");
+    new_mask.setAttribute("hidden", "hidden");
 
     var c_height = document.documentElement.clientHeight;
     var c_width = document.documentElement.clientWidth;
 
     mask.style.height = c_height + "px";
-    new_thing.style.left = c_width / 2 - 240 + "px";
-    new_thing.style.top = c_height / 2 - 380 + "px";
+    new_mask.style.left = c_width / 2 - 240 + "px";
+    new_mask.style.top = c_height / 2 - 380 + "px";
     
     //視窗大小變動
     window.onresize = function() {
@@ -100,13 +100,13 @@
         var c_width = document.documentElement.clientWidth;
 
         mask.style.height = c_height + "px";
-        new_thing.style.left = c_width / 2 - 240 + "px";
-        new_thing.style.top = c_height / 2 - 380 + "px";
+        new_mask.style.left = c_width / 2 - 240 + "px";
+        new_mask.style.top = c_height / 2 - 380 + "px";
     }
     //隱藏遮罩
     function del_new_admin(){
         mask.setAttribute("hidden", "hidden");
-        new_thing.setAttribute("hidden", "hidden");
+        new_mask.setAttribute("hidden", "hidden");
     }         
 
 
@@ -148,7 +148,7 @@
     }
     function show_new_admin(){
         mask.removeAttribute("hidden");
-        new_thing.removeAttribute("hidden");
+        new_mask.removeAttribute("hidden");
         var formData = new FormData(); 
         formData.append("type", 1);      
 

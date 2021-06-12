@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2021-06-11 14:24:13
+-- 產生時間： 2021-06-11 12:08:10
 -- 伺服器版本： 10.4.18-MariaDB
 -- PHP 版本： 8.0.3
 
@@ -72,8 +72,7 @@ INSERT INTO `forum` (`fid`, `forum`, `animal`, `introduce`, `nickname`, `feature
 (2, '花花', 'dog', '大家好，我是政大花花！今年不知道幾歲！興趣是閉眼聽課，專長是搭電梯，綜院跟國際大樓都會。', '斑斑、大花、胖花', '深色玳瑁花紋、有戴項圈', '溫和沉穩，十分好學，政大校園最友善的狗狗', '山上山下都可以看到花花的足跡！', 'https://www.instagram.com/huahualufyou/', 'images/huahua.jpg', 'images/icon_huahua.png'),
 (3, '胖虎', 'cat', '愛被拍屁股、沒節操、 超級聰明的肥大叔。', '阿肥、老大', '深色虎斑貓、綠瞳孔', '任性、桀傲不遜、自由奔放', '莊外、莊內', 'https://www.instagram.com/fluffycat_fatty/', 'images/tiger.jpg', 'images/icon_tiger.png'),
 (18, '草尼馬', 'others', '羊駝（學名：Vicugna pacos；西班牙語：Alpaca、英語：Alpaca），又名駝羊，俗稱草泥馬，屬偶蹄目駱駝科，外形有點像綿羊，一般在高原生活，世界現有羊駝約300萬隻左右，約90%以上生活在南美洲的祕魯及智利的高原上。\n政大有一隻很神奇ㄝ', '馬馬', '毛茸茸', '兇兇', '河堤、星巴克、私房面', '', './images/1623405833.jpg', 'images/defalt.png'),
-(19, '賓士', 'cat', '小公寓貓貓', '', '', '', '', '', 'images/defalt.png', 'images/defalt.png'),
-(20, '穿山甲', 'others', '', '', '', '', '', '', './images/1623413802.png', 'images/defalt.png');
+(19, '賓士', 'cat', '小公寓貓貓', '', '', '', '', '', 'images/defalt.png', 'images/defalt.png');
 
 -- --------------------------------------------------------
 
@@ -127,8 +126,9 @@ CREATE TABLE `message1` (
 INSERT INTO `message1` (`mid`, `uid`, `title`, `content`, `time`, `longitude`, `latitude`, `health`, `feed`, `imageurl`, `ip`) VALUES
 (1, 2, '小橘', '小橘', '2021-06-05 14:24:26', 121.57648206320519, 24.987197754293412, 'healthy', 'nofeed', NULL, '::1'),
 (2, 1, '測試', '測試測試', '2021-06-06 18:07:16', 121.58142205323983, 24.984221979014727, 'healthy', 'nofeed', NULL, '::1'),
+(6, 1, 'test1', 'test1', '2021-06-11 09:01:10', 121.58116973432112, 24.984716443206626, 'healthy', 'nofeed', './images/1623402065.png', '::1'),
 (7, 1, 'test2', 'test2', '2021-06-11 09:07:43', 121.57252472457712, 24.98785266293052, 'healthy', 'nofeed', NULL, '::1'),
-(10, 2, 'test3', 'test3', '2021-06-11 11:58:03', 121.57407617565697, 24.984713782513452, 'healthy', 'nofeed', './images/1623412443.png', '::1');
+(8, 1, 'test3', 'test3', '2021-06-11 09:20:36', 121.57674940245089, 24.98599370550703, 'healthy', 'nofeed', './images/1623403229.png', '::1');
 
 -- --------------------------------------------------------
 
@@ -182,8 +182,7 @@ CREATE TABLE `message3` (
 --
 
 INSERT INTO `message3` (`mid`, `uid`, `title`, `content`, `time`, `longitude`, `latitude`, `health`, `feed`, `imageurl`, `ip`) VALUES
-(1, 2, '胖虎', '胖虎', '2021-06-05 14:25:22', 0, 0, 'healthy', 'nofeed', NULL, '::1'),
-(2, 1, 'test1', 'test1', '2021-06-11 12:09:04', 121.57712531083236, 24.987820129713405, 'healthy', 'nofeed', './images/1623413316.png', '::1');
+(1, 2, '胖虎', '胖虎', '2021-06-05 14:25:22', 0, 0, 'healthy', 'nofeed', NULL, '::1');
 
 -- --------------------------------------------------------
 
@@ -212,26 +211,6 @@ CREATE TABLE `message18` (
 --
 
 CREATE TABLE `message19` (
-  `mid` int(11) NOT NULL COMMENT '文章id',
-  `uid` int(11) NOT NULL COMMENT '貼文者id',
-  `title` varchar(256) NOT NULL COMMENT '標題',
-  `content` varchar(1024) NOT NULL COMMENT '內容',
-  `time` timestamp NOT NULL DEFAULT current_timestamp() COMMENT '發表時間',
-  `longitude` double NOT NULL COMMENT '經度',
-  `latitude` double NOT NULL COMMENT '緯度',
-  `health` varchar(11) NOT NULL COMMENT '健康狀態',
-  `feed` varchar(11) NOT NULL COMMENT '有無餵食',
-  `imageurl` varchar(128) DEFAULT NULL,
-  `ip` varchar(64) NOT NULL COMMENT '發文者IP'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- 資料表結構 `message20`
---
-
-CREATE TABLE `message20` (
   `mid` int(11) NOT NULL COMMENT '文章id',
   `uid` int(11) NOT NULL COMMENT '貼文者id',
   `title` varchar(256) NOT NULL COMMENT '標題',
@@ -327,21 +306,6 @@ CREATE TABLE `respon19` (
   `ip` varchar(64) NOT NULL COMMENT '回覆者IP'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- 資料表結構 `respon20`
---
-
-CREATE TABLE `respon20` (
-  `rid` int(11) NOT NULL COMMENT '回覆文章id',
-  `mid` int(11) NOT NULL COMMENT '文章id ',
-  `uid` int(11) NOT NULL COMMENT '回覆者id ',
-  `content` varchar(1024) NOT NULL COMMENT '回覆內容',
-  `time` timestamp NOT NULL DEFAULT current_timestamp() COMMENT '發表時間',
-  `ip` varchar(64) NOT NULL COMMENT '回覆者IP'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 --
 -- 已傾印資料表的索引
 --
@@ -396,12 +360,6 @@ ALTER TABLE `message19`
   ADD PRIMARY KEY (`mid`);
 
 --
--- 資料表索引 `message20`
---
-ALTER TABLE `message20`
-  ADD PRIMARY KEY (`mid`);
-
---
 -- 資料表索引 `respon1`
 --
 ALTER TABLE `respon1`
@@ -432,12 +390,6 @@ ALTER TABLE `respon19`
   ADD PRIMARY KEY (`rid`);
 
 --
--- 資料表索引 `respon20`
---
-ALTER TABLE `respon20`
-  ADD PRIMARY KEY (`rid`);
-
---
 -- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
 --
 
@@ -451,7 +403,7 @@ ALTER TABLE `admin`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `forum`
 --
 ALTER TABLE `forum`
-  MODIFY `fid` int(5) NOT NULL AUTO_INCREMENT COMMENT '討論區id', AUTO_INCREMENT=21;
+  MODIFY `fid` int(5) NOT NULL AUTO_INCREMENT COMMENT '討論區id', AUTO_INCREMENT=20;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member`
@@ -463,7 +415,7 @@ ALTER TABLE `member`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `message1`
 --
 ALTER TABLE `message1`
-  MODIFY `mid` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章id', AUTO_INCREMENT=11;
+  MODIFY `mid` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章id', AUTO_INCREMENT=9;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `message2`
@@ -475,7 +427,7 @@ ALTER TABLE `message2`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `message3`
 --
 ALTER TABLE `message3`
-  MODIFY `mid` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章id', AUTO_INCREMENT=3;
+  MODIFY `mid` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章id', AUTO_INCREMENT=2;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `message18`
@@ -487,12 +439,6 @@ ALTER TABLE `message18`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `message19`
 --
 ALTER TABLE `message19`
-  MODIFY `mid` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章id';
-
---
--- 使用資料表自動遞增(AUTO_INCREMENT) `message20`
---
-ALTER TABLE `message20`
   MODIFY `mid` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章id';
 
 --
@@ -523,12 +469,6 @@ ALTER TABLE `respon18`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `respon19`
 --
 ALTER TABLE `respon19`
-  MODIFY `rid` int(11) NOT NULL AUTO_INCREMENT COMMENT '回覆文章id';
-
---
--- 使用資料表自動遞增(AUTO_INCREMENT) `respon20`
---
-ALTER TABLE `respon20`
   MODIFY `rid` int(11) NOT NULL AUTO_INCREMENT COMMENT '回覆文章id';
 COMMIT;
 
