@@ -150,6 +150,7 @@
                 $files = glob($dir.'*');
                 foreach ($files as $file) 
                     @unlink($file);
+                    @rmdir($dir);
                 $imageurl = str_replace("../","./", $newPath);
                 $sql = "INSERT INTO forum (forum, animal, introduce, nickname, features, characters, places, socialmedia, imageurl)";
                 $sql.= " VALUES(:forum,:animal,:introduce,:nickname,:features,:characters,:places,:socialmedia, :imageurl)";

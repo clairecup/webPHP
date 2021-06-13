@@ -34,6 +34,10 @@
 		echo json_encode( array("result" => "ERROR", "message"=>"[文章內容]不能空白", "field"=>"content" ) );
 		exit;
 	}
+	if( $lat=="undefined" || $lng=="undefined") {
+		$lat = 0;
+		$lng = 0;
+	}
 
 	// 將發文的資料 新增至 資料庫 message? , 跳轉至首頁
 	$TABLENAME = "message".$_SESSION['fid'];
@@ -52,20 +56,34 @@
 			foreach ($files as $file) 
 				@unlink($file);
 			$imageurl = str_replace("../","./", $newPath);
-			$sql="INSERT INTO $TABLENAME (uid,title,content,longitude, latitude,health, feed, imageurl,ip) values(?,?,?,?,?,?,?,?,?)";//將需要過濾的欄位以?代替
-			$arr=array($uid, $title, $content, $lng, $lat, $health, $feed, $imageurl, $ip);
+			$sql="INSERT INTO $TABLENAME (uid,title,content,longitude, latitude,health, feed, imageurl,ip)";
+			$sql.=" values(:uid, :title, :content, :lng, :lat, :health, :feed, :imageurl, :ip)";
+			//$arr=array($uid, $title, $content, $lng, $lat, $health, $feed, $imageurl, $ip);
+			$sth = $db->prepare($sql);
+			$sth->bindParam(':imageurl'       , $imageurl       , PDO::PARAM_STR);
 				
 			
 		}
 	}
 	else{
-		$sql = "INSERT INTO $TABLENAME (uid,title,content,longitude, latitude,health, feed, ip) values(?,?,?,?,?,?,?,?)";//將需要過濾的欄位以?代替
-		$arr = array($uid, $title, $content, $lng, $lat, $health, $feed, $ip);	
+		$sql = "INSERT INTO $TABLENAME (uid,title,content,longitude, latitude,health, feed, ip) ";
+		$sql.=" values(:uid, :title, :content, :lng, :lat, :health, :feed, :ip)";
+		//$arr = array($uid, $title, $content, $lng, $lat, $health, $feed, $ip);
+		$sth = $db->prepare($sql);	
 	}
+	
+
+	$sth->bindParam(':uid'      , $uid       , PDO::PARAM_INT);
+	$sth->bindParam(':title'    , $title     , PDO::PARAM_STR);
+	$sth->bindParam(':content'  , $content   , PDO::PARAM_STR);
+	$sth->bindParam(':lng'      , $lng       , PDO::PARAM_STR);
+	$sth->bindParam(':lat'      , $lat       , PDO::PARAM_STR);
+	$sth->bindParam(':health'   , $health    , PDO::PARAM_STR);
+	$sth->bindParam(':feed'     , $feed      , PDO::PARAM_STR);
+	$sth->bindParam(':ip'       , $ip        , PDO::PARAM_STR);
 
 	
-	$sth = $db->prepare($sql);
-	$result = $sth->execute($arr);  //以字串陣列傳入
+	$result = $sth->execute();  //以字串陣列傳入
     //$sql.= " VALUES($uid,'$title','$content','$ip')";
 	
 	//$result = $db->exec($sql);
@@ -74,7 +92,7 @@
 	    echo json_encode( array("result" => "OK", "message"=>"貼文成功", "url"=>$HOME_URL ) );
 	}
 	else {
-		echo json_encode( array("result" => "ERROR", "message"=>"貼文失敗\n\n", "field"=>"title" ) );
+		echo json_encode( array("result" => "ERROR", "message"=>"貼文失敗\n\n$sql", "field"=>"title" ) );
 	}
 
 ?>

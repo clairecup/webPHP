@@ -66,8 +66,7 @@
 
         //$iconid = $fid;
         //if($fid>=4)$iconid=4;
-        $n = 0;
-  
+        $n = 0;  
         while($row = $sth1->fetch(PDO::FETCH_ASSOC)){
             $mid = $row['mid'];
             $uid = $row['uid'];
@@ -75,24 +74,28 @@
             $time = $row['time'];
             $longitude = $row['longitude'];
             $latitude = $row['latitude'];
-             
+            if($longitude !=0 && $latitude !=0){
                 $marker.= "var marker".$fid.$mid." = L.marker([".$latitude.", ".$longitude."], {icon:L.icon({";
-            $marker.= "iconUrl: '$mapIcon',";
-            if($n == 0){
-                $marker.= "iconSize: [50, 50],";
-                $marker.= "className: 'blinking'})";
-                $n++;
-            }
-            else{
-                $marker.= "iconSize: [30, 30]})";
-                //$marker.= "className: 'blinking'})";
-            }
+                $marker.= "iconUrl: '$mapIcon',";
+                if($n == 0){
+                    $marker.= "iconSize: [50, 50],";
+                    $marker.= "className: 'blinking'})";
+                    $n++;
+                }
+                else{
+                    $marker.= "iconSize: [30, 30]})";
+                    //$marker.= "className: 'blinking'})";
+                }
+    
+                $marker.= "}).addTo(mymap).bindPopup(";
+                $marker.= "\"<p class=InfoTitle onclick=toDiscuss($fid,'$forum',$mid)>".$forum."</p>";
+                $marker.= "<p class=info>回報文章：".$title."</p>";
+                $marker.= "<p class=info>回報者ID：".$uid."</p>";
+                $marker.= "<p class=info>活動時間：".$time."</p>\");\n";
 
-            $marker.= "}).addTo(mymap).bindPopup(";
-            $marker.= "\"<p class=InfoTitle onclick=toDiscuss($fid,'$forum',$mid)>".$forum."</p>";
-            $marker.= "<p class=info>回報文章：".$title."</p>";
-            $marker.= "<p class=info>回報者ID：".$uid."</p>";
-            $marker.= "<p class=info>活動時間：".$time."</p>\");\n";
+            }
+             
+
         }
 
 	}      
