@@ -16,7 +16,7 @@
 
     // 定義網站的 相對路徑
 	$HOME_TITLE = "政大小動物追蹤網";
-	$HOME_URL = "/webFINAL";
+	$HOME_URL = "/nccuanimal";
     $DISCUSS_URL = $HOME_URL."/discuss.php";
     
 
@@ -40,5 +40,4 @@
     $orange="小橘";
     $huahua="花花";
     $tiger="胖虎";
-
 ?>

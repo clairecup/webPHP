@@ -38,13 +38,23 @@
         $imageurl = $row["imageurl"];
         $iconurl  = $row["iconurl"];
         $mapIcon  = $row["mapIcon"];
-       
-        $board_str.= "<tr height=32px><td width=100%>\n"; 
-        //$board_str.= "<a onclick=\"viewBoard($fid,'$forum')\"><img id='icon' class='img-thumbnail'  src='$iconurl'></a>\n";
-        $board_str.= "<button class='btn-equal-width' id='forum$fid' value='$forum' onclick=\"viewBoard($fid,'$forum')\"><img src='$iconurl' class='imgD'>$forum</button>\n";      
-        //$board_str.= "<input type='button' id='forum$fid' value='$forum' onclick=\"viewBoard($fid,'$forum')\">\n";
+
+        $board_str.= "<tr height=32px><td width=100%>\n";        
+		$board_str.= "<button class='btn-equal-width' id='forum$fid' value='$forum' onclick=\"viewBoard($fid,'$forum')\"><img src='$iconurl' class='imgD' style='display:inline;vertical-align:middle;'><h2 style='display:inline;vertical-align:middle;'>$forum</h2></button>\n";
+		$board_str.= "</td></tr>\n";
+        /*
+        $board_str.= "<tr height=32px>\n";
+        $board_str.= "    <td width=100%>\n"; 
+        $board_str.= "    <button class='btn-equal-width' id='forum$fid' value='$forum' onclick=\"viewBoard($fid,'$forum')\">\n";      
+        $board_str.= "        <table>\n";
+        $board_str.= "            <tr>\n";
+        $board_str.= "                <td ><img src='$iconurl' class='imgD' style='display:inline;vertical-align:middle;'></td>\n";
+        $board_str.= "                <td><h2 style='display:inline;vertical-align:middle;text-align:right;'>$forum</h2></td>\n";        
+        $board_str.= "            </tr>\n";
+        $board_str.= "        </table>\n";
+        $board_str.= "     </button>\n";
         $board_str.= "</td></tr>\n";
-		
+		*/
         //-------------------------
         //地圖
         //-------------------------
@@ -52,11 +62,12 @@
         // 第2個 資料庫連線
 	    $dbh = new PDO($dsn, $db_user,$db_passwd);        
         $dbh->exec("set names utf8");
-        $sth1 = $dbh->query("SELECT * FROM $TABLENAME");
+        $sth1 = $dbh->query("SELECT * FROM $TABLENAME ORDER BY time DESC");
 
         //$iconid = $fid;
         //if($fid>=4)$iconid=4;
-        $n = 0;        
+        $n = 0;
+  
         while($row = $sth1->fetch(PDO::FETCH_ASSOC)){
             $mid = $row['mid'];
             $uid = $row['uid'];
@@ -65,7 +76,7 @@
             $longitude = $row['longitude'];
             $latitude = $row['latitude'];
              
-            $marker.= "var marker".$fid.$mid." = L.marker([".$latitude.", ".$longitude."], {icon:L.icon({";
+                $marker.= "var marker".$fid.$mid." = L.marker([".$latitude.", ".$longitude."], {icon:L.icon({";
             $marker.= "iconUrl: '$mapIcon',";
             if($n == 0){
                 $marker.= "iconSize: [50, 50],";
@@ -82,8 +93,6 @@
             $marker.= "<p class=info>回報文章：".$title."</p>";
             $marker.= "<p class=info>回報者ID：".$uid."</p>";
             $marker.= "<p class=info>活動時間：".$time."</p>\");\n";
-            //$marker.= ".bindPopup('<p class=InfoTitle><b>$forum </b></p><p class=info><a>回報文章：".$title."</a></p><p class=info>回報者ID：".$uid."</p><p class=info>活動時間：".$time."</p>');";
-            
         }
 
 	}      
@@ -92,7 +101,7 @@
     <head>
 	    <meta charset="UTF-8">
         <title><?PHP echo $HOME_TITLE;?></title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
 
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>

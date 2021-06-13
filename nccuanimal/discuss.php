@@ -21,7 +21,7 @@
 	// 產出討論版區塊
 	//---------------------------------
     $record=[];
-	$sth = $db->prepare("SELECT fid,forum FROM forum ORDER BY fid");
+	$sth = $db->prepare("SELECT fid,forum,iconurl FROM forum ORDER BY fid");
     $sth->execute();
 	$board_str = "";
     if( isset($_SESSION['admin']) && $_SESSION['admin']==0 ){
@@ -35,9 +35,10 @@
 	while( ($row=$sth->fetch()) ) {
 		$fid   = $row["fid"];
 		$forum = $row["forum"];
+        $iconurl  = $row["iconurl"];
        
 		$board_str.= "<tr height=32px><td width=100%>\n";        
-		$board_str.= "<input type='button' id='forum$fid' value='$forum' onclick=\"viewBoard($fid,'$forum')\">\n";
+		$board_str.= "<button class='btn-equal-width' id='forum$fid' value='$forum' onclick=\"viewBoard($fid,'$forum')\"><img src='$iconurl' class='imgD' style='display:inline;vertical-align:middle;'><h2 style='display:inline;vertical-align:middle;'>$forum</h2></button>\n";
 		$board_str.= "</td></tr>\n";
 		
 		// 如未指定目前的討論版, 將第一個fid當作預設, 利用最後面javascript來啟動
@@ -57,7 +58,6 @@
         <!--jquery-->
         <script src="./jquery-3.6.0.js"></script>
         <link rel="stylesheet" type="text/css" href="hw05.css">
-        
     </head>   
 
     <body>        
