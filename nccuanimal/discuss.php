@@ -144,7 +144,16 @@
         </div> 
                    
         <script src="./mask.js"></script>
-        <script>                 
+        <script>
+            $(window).scroll(function(){
+                last=$("body").height()-$(window).height();
+                if($(window).scrollTop()>=last){
+                    $("#header").css("background-color","rgba(155, 191, 184,0.3)");//#80FF0000
+                }
+                if($(window).scrollTop()<=last){
+                    $("#header").css("background-color","rgba(155, 191, 184,1)");
+                }
+            });                 
 			// 點選要看的討論版
 			function viewBoard(fid,forum) {
                 switch (forum) {

@@ -17,7 +17,7 @@
     $password1 = check_input( $_POST['password1'] );
 	$password2 = check_input( $_POST['password2'] );
 	$nickname  = check_input( $_POST['nickname'] );
-	$uid       = $SESSION['uid'];
+	$uid       = $_SESSION['uid'];
 
 	if( $nickname=="" ) {
 		echo json_encode( array("result" => "ERROR", "message"=>"[綽號]不能空白", "field"=>"nickname" ) );

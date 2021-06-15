@@ -540,6 +540,15 @@
     <script src="./mask.js"></script>
     <script>
         initialize();
+        $(window).scroll(function(){
+                last=$("body").height()-$(window).height();
+                if($(window).scrollTop()>=last){
+                    $("#header").css("background-color","rgba(155, 191, 184,0.3)");//#80FF0000
+                }
+                if($(window).scrollTop()<=last){
+                    $("#header").css("background-color","rgba(155, 191, 184,1)");
+                }
+            });   
         document.getElementById("imgMap").innerHTML ="<button class='btn-none' onclick='toMap()'><img src='./images/map.png' class='imgD'></button>"; 
         $("#mapid").attr("style","display:block");//顯示div
         $("#discussDiv").attr("style","display:none;;");//隱藏div
