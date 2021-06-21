@@ -1,6 +1,7 @@
 <?PHP
 
 session_start();
+include "tools.php";
 if ( !isset($_SESSION['uid']) ) {
     session_destroy();
     echo "<script>window.location.href='".$HOME_URL."'</script>";
@@ -8,11 +9,11 @@ if ( !isset($_SESSION['uid']) ) {
 }
 
 if( !isset($_SESSION['admin']) && !isset($_POST["type"]) ){
-    echo "哈哈";
+    echo "<script>window.history.back();</script>";
     exit;
 }    
 
-include "tools.php";
+
 
 
 if( $_POST["type"]==1 )

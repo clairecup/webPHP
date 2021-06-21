@@ -13,7 +13,7 @@
 	// 從資料庫中 找出看板的標題
 	$TABLENAME = "message".$_SESSION['fid'];
 	$RESPONAME = "respon".$_SESSION['fid'];
-	$sql = "SELECT f.mid,f.uid,f.title,f.content,f.time,f.longitude,f.latitude, f.health, f.feed,f.imageurl , m.nickname
+	$sql = "SELECT f.mid,f.uid,f.title,f.content,f.time,f.longitude,f.latitude, f.health, f.feed,f.imageurl , m.nickname, m.preference
               FROM $TABLENAME as f 
               LEFT JOIN member as m
                 ON f.uid=m.uid
@@ -35,7 +35,7 @@
 		$nickname = $row["nickname"];
 		$time     = $row['time'];
 		$img      = $row['imageurl'];
-		//$img      = $row['imageurl'];
+		$pref     = $row['preference'];
 
 		//處理換行排版		 
 		$content = str_replace("\n", "<br>", $content);
@@ -62,18 +62,23 @@
 		if($lat != 0 && $lng != 0){
 			$lat = round($lat, 4);
 			$lng = round($lng, 4);
-			$str.="               <li><a href='#' class='tag'>#".$lat.", ".$lng."</a></li>\n"; 
+			$str.="               <li><a href='$HOME_URL' class='tag'>#".$lat.", ".$lng."</a></li>\n"; 
 		}
 		//健康
 		if($health == "unhealthy")
-			$str.="               <li><a href='#' class='tag'>#不健康</a></li>\n"; 
+			$str.="               <li><a href='$HOME_URL' class='tag'>#不健康</a></li>\n"; 
 		//餵食
 		if($feed == "feed")
-			$str.="               <li><a href='#' class='tag'>#有餵食</a></li>\n";		
+			$str.="               <li><a href='$HOME_URL' class='tag'>#有餵食</a></li>\n";		
 		
 		$str.="               </ul>\n";
 		$str.="                <div class='card-header-user'>\n";
-		$str.="                    <span class='icon-user'></span>&nbsp; user: $nickname\n";		
+		if($pref == "dog"){
+			$str.="                <i class='fas fa-dog fa-2x'></i></span>&nbsp; user: $nickname\n";}
+		else if($pref == "cat"){
+			$str.="                <i class='fas fa-cat fa-2x'></i></span>&nbsp; user: $nickname\n";}
+		else{
+			$str.="                <span class='icon-user'></span>&nbsp; user: $nickname\n";}				
 		$str.="            	       <p class='card-time'>$time </p>\n";		
 		$str.="                </div>\n";		
 		$str.="            </div>\n";		
@@ -96,7 +101,7 @@
 			$str.="         </div>\n";
 			}
 		//撈回覆資料
-		$sql = "SELECT r.content,m.nickname,r.time,r.rid";
+		$sql = "SELECT r.content,m.nickname,r.time,r.rid,m.preference";
 		$sql.= "  FROM $RESPONAME as r";
 		$sql.= " LEFT JOIN member as m";
 		$sql.= " ON r.uid=m.uid";
@@ -110,12 +115,18 @@
 			$nickname = $row['nickname'];
 			$content  = $row["content"];
 			$time     = $row["time"];
-			$rid      = $row["rid"];		
+			$rid      = $row["rid"];
+			$pref     = $row['preference'];			
 		
 		$str.="             <div class='replycontent'>\n";
 		$str.="                 <div class='replycontent0'>&nbsp;</div>\n";
 		$str.="                 <div class='replycontent1'>\n";
-		$str.="                     <span class='icon-user'></span>&nbsp; user: $nickname\n";
+		if($pref == "dog"){
+			$str.="                <i class='fas fa-dog'></i></span>&nbsp; user: $nickname\n";}
+		else if($pref == "cat"){
+			$str.="                <i class='fas fa-cat'></i></span>&nbsp; user: $nickname\n";}
+		else{
+			$str.="                <span class='icon-user'></span>&nbsp; user: $nickname\n";}			
 		$str.="                     <p style='font-size: 12px; paddin:0px;'>(".$time.")</p>\n";
 		$str.="                 </div>\n";
 		$str.="                 <span class='replycontent2'><p>$content</p></span>\n";		

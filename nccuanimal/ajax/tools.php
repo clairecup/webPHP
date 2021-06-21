@@ -1,10 +1,10 @@
 <?PHP
 //PHP共用設定
     // 資料庫連接設定
-    $db_server = "localhost";
-    $db_user = "msgUser";
-    $db_passwd = "msgUser123";
-    $db_name = "webFINAL"; 
+    $db_server = "";
+    $db_user = "";
+    $db_passwd = "";
+    $db_name = ""; 
     
     try{
         $dsn = "mysql:host=$db_server;dbname=$db_name";

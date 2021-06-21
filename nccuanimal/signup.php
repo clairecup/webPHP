@@ -37,7 +37,7 @@
                 <div class="form-group">
                     <select class="form-control" name="preference" id="preference" SIZE=3>                            
                         <option value="dog">狗狗</option>
-                        <option value="cat">貓狗</option>
+                        <option value="cat">貓貓</option>
                         <option value="all" selected>我全都愛</option>                                                  
                     </select>
                 </div>

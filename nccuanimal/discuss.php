@@ -1,7 +1,20 @@
 <?PHP
     session_start();
-    if ( isset($_SESSION['uid']) ) {              
-        $funcName = "<li><span class='icon-user'></span></li>";        
+	include "ajax/tools.php";
+    if ( isset($_SESSION['uid']) ) {
+        $uid = $_SESSION['uid'];
+        $sth = $db->prepare("SELECT preference FROM member where uid=:uid");
+        $sth->bindParam(':uid', $uid, PDO::PARAM_INT);
+        $sth->execute();
+        $row=$sth->fetchAll(); 
+        $pref =  $row[0]['preference'];
+        //echo $pref;
+        if($pref == "dog")
+        $funcName = "<li><i class='fas fa-dog'></i>&nbsp;</li>";
+		else if($pref == "cat")
+        $funcName = "<li><i class='fas fa-cat'></i>&nbsp;</li>";
+		else
+        $funcName = "<li><span class='icon-user'></span></li>";  		       
 	    $funcName.= "<li>Hi, ".$_SESSION['nickname']."&nbsp;</li>";
         if( isset($_SESSION['admin'])){
             $funcName.= "<li><a href='admin.php' class='a'>管理</a></li>";
@@ -15,7 +28,7 @@
         $funcName.= "<li><a href='signup.php' class='a'>註冊</a></li>";
     }
 
-    include "ajax/tools.php";
+    
 	
 	//---------------------------------
 	// 產出討論版區塊
@@ -145,29 +158,31 @@
                    
         <script src="./mask.js"></script>
         <script>
-            $(window).scroll(function(){
-                last=$("body").height()-$(window).height();
-                if($(window).scrollTop()>=last){
-                    $("#header").css("background-color","rgba(155, 191, 184,0.3)");//#80FF0000
-                }
-                if($(window).scrollTop()<=last){
-                    $("#header").css("background-color","rgba(155, 191, 184,1)");
-                }
-            });                 
+			/*
+			$(window).scroll(function(){
+				last=$("body").height()-$(window).height();
+				if($(window).scrollTop()>=last){
+					$("#header").css("background-color","rgba(155, 191, 184,0.5)");//#80FF0000
+				}
+				if($(window).scrollTop()<=last){
+					$("#header").css("background-color","rgba(155, 191, 184,1)");
+				}
+			});*/
+
 			// 點選要看的討論版
 			function viewBoard(fid,forum) {
                 switch (forum) {
                     case '小橘':
-                        document.getElementById("imgDiv").innerHTML ="<a href='./introduction/orange.php'><img src='./images/icon_orange.png' class='imgD'></a>";
+                        document.getElementById("imgDiv").innerHTML ="<img src='./images/icon_orange.png' class='imgD'>";
                         break;
                     case '花花':
-                        document.getElementById("imgDiv").innerHTML ="<a href='./introduction/huahua.php'><img src='./images/icon_huahua.png' class='imgD'></a>";
+                        document.getElementById("imgDiv").innerHTML ="<img src='./images/icon_huahua.png' class='imgD'>";
                         break;
                     case '胖虎':
-                        document.getElementById("imgDiv").innerHTML ="<a href='./introduction/tiger.php'><img src='./images/icon_tiger.png' class='imgD'></a>";
+                        document.getElementById("imgDiv").innerHTML ="<img src='./images/icon_tiger.png' class='imgD'>";
                         break;
                     default:
-                        document.getElementById("imgDiv").innerHTML = "<a href='#'><img src='./images/defalt.png' class='imgD'></a>";
+                        document.getElementById("imgDiv").innerHTML = "<img src='./images/defalt.png' class='imgD'>";
                 } 
             /*新增看板名稱
             function new_forum(){                
@@ -280,12 +295,12 @@
                             var jsonOBJ = JSON.parse(xhr.responseText);
 
                             if (jsonOBJ.result=="OK" ) {
-                                viewBoard(fid,forum);	                        
-                                alert(jsonOBJ.message);
+                                viewBoard(fid);	                        
+                                alert(jsonOBJ.message);								
                                 return;
                             }
                             if (jsonOBJ.result=="ERROR" ) {
-                                viewBoard(fid,forum);	                        
+                                viewBoard(fid);	                        
                                 alert(jsonOBJ.message);
                                 return;
                             }		
@@ -310,7 +325,7 @@
                             var jsonOBJ = JSON.parse(xhr.responseText);
 
                             if (jsonOBJ.result=="OK" ) {
-                                viewBoard(fid,forum);                               	                        
+                                viewBoard(fid);                               	                        
                                 alert(jsonOBJ.message);
                                 return;
                             }

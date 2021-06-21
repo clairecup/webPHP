@@ -8,19 +8,16 @@
 
 	// 如果沒登入, 導回 LOGIN 頁面
     if( !isset($_SESSION['nickname']) || $uid <= 0 ) {
-		echo "<script>window.location.href='signup.php'</script>";
+		echo "<script>window.location.href='login.php'</script>";
 		exit;
 	}
 
     include "ajax/tools.php";
-
 	
 	// 進資料庫 檢查 username 跟 password 是否存在
 	$sth = $db->prepare("SELECT username,nickname FROM member WHERE uid=:uid");
     $sth->bindParam(':uid', $uid, PDO::PARAM_INT);
     $sth->execute();
-
-
 	$rows = $sth->fetchAll();
 	
 	$username = $rows[0]['username'];

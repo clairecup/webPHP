@@ -43,7 +43,7 @@
 	
 	// 重新找尋此文章 回覆內容的所有記錄	
 	// 找出此文章的回覆內容
-	$sql = "SELECT r.content,m.nickname,r.time,r.rid ";
+	$sql = "SELECT r.content,m.nickname,r.time,r.rid,m.preference ";
 	$sql.= "  FROM $RESPONAME as r";
 	$sql.= " LEFT JOIN member as m";
 	$sql.= " ON r.uid=m.uid";
@@ -57,11 +57,17 @@
 		$content  = $row["content"];
 		$time     = $row["time"];
 		$rid      = $row["rid"];
+		$pref     = $row['preference'];
 
 		$str.="             <div class='replycontent'>\n";
 		$str.="                 <div class='replycontent0'>&nbsp;</div>\n";
 		$str.="                 <div class='replycontent1'>\n";
-		$str.="                     <span class='icon-user'></span>&nbsp; user: $nickname\n";
+		if($pref == "dog"){
+			$str.="                 <i class='fas fa-dog'></i></span>&nbsp; user: $nickname\n";}
+		else if($pref == "cat"){
+			$str.="                 <i class='fas fa-cat'></i></span>&nbsp; user: $nickname\n";}
+		else{
+			$str.="                 <span class='icon-user'></span>&nbsp; user: $nickname\n";}			
 		$str.="                     <p style='font-size: 12px; paddin:0px;'>(".$time.")</p>\n";
 		$str.="                 </div>\n";
 		$str.="                 <span class='replycontent2'><p>$content</p></span>\n";		

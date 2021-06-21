@@ -1,10 +1,10 @@
 <?php
     include "ajax/tools.php";
     session_start();
-    if ( !isset($_SESSION['uid']) ) {
+    if ( !isset($_SESSION['uid']) ) {		
         session_destroy();
-        echo json_encode( array("result" =>  "<script>window.location.href='".$HOME_URL."'</script>") );
-        exit;
+		echo "<script>window.location.href='".$HOME_URL."'</script>";
+		exit;
     }
 
     $whiteList = array('jpg', 'png','jpeg','gif');    

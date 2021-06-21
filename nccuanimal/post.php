@@ -1,8 +1,9 @@
 <?PHP
     session_start();
+	include "ajax/tools.php";
 	// 如果沒登入, 導回 LOGIN 頁面
     if( !isset($_SESSION['nickname']) ) {
-		echo "<script>window.location.href='login.php'</script>";
+		echo "<script>window.location.href='".$HOME_URL."'</script>";
 		exit;
 	}
     // 如未指定目前的討論版, 將第一個fid當作預設,
@@ -11,7 +12,7 @@
         $_SESSION['fid'] = $fid;
     }
 
-    include "ajax/tools.php";
+    
 
     // 找出目前 看板名稱
     $sql = "SELECT fid,forum,animal FROM forum WHERE fid=".$_SESSION['fid'];

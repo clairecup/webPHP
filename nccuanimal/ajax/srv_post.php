@@ -55,6 +55,7 @@
 			$files = glob($dir.'*');
 			foreach ($files as $file) 
 				@unlink($file);
+			@rmdir($dir);
 			$imageurl = str_replace("../","./", $newPath);
 			$sql="INSERT INTO $TABLENAME (uid,title,content,longitude, latitude,health, feed, imageurl,ip)";
 			$sql.=" values(:uid, :title, :content, :lng, :lat, :health, :feed, :imageurl, :ip)";
@@ -88,10 +89,14 @@
 	
 	//$result = $db->exec($sql);
 	
+	
+	
+	
     if( $result==1 ) {
 	    echo json_encode( array("result" => "OK", "message"=>"貼文成功", "url"=>$HOME_URL ) );
 	}
 	else {
+		print_r($sth->errorInfo());
 		echo json_encode( array("result" => "ERROR", "message"=>"貼文失敗\n\n$sql", "field"=>"title" ) );
 	}
 

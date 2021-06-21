@@ -1,7 +1,20 @@
 <?PHP
     session_start();
-    if ( isset($_SESSION['uid']) ) {              
-        $funcName = "<li><span class='icon-user'></span></li>";        
+	include "ajax/tools.php";
+    if ( isset($_SESSION['uid']) ) {
+        $uid = $_SESSION['uid'];
+        $sth = $db->prepare("SELECT preference FROM member where uid=:uid");
+        $sth->bindParam(':uid', $uid, PDO::PARAM_INT);
+        $sth->execute();
+        $row=$sth->fetchAll(); 
+        $pref =  $row[0]['preference'];
+        //echo $pref;
+        if($pref == "dog")
+        $funcName = "<li><i class='fas fa-dog'></i>&nbsp;</li>";
+		else if($pref == "cat")
+        $funcName = "<li><i class='fas fa-cat'></i>&nbsp;</li>";
+		else
+        $funcName = "<li><span class='icon-user'></span></li>";      		        
 	    $funcName.= "<li>Hi, ".$_SESSION['nickname']."&nbsp;</li>";
         if( isset($_SESSION['admin'])){
             $funcName.= "<li><a href='admin.php' class='a'>管理</a></li>";
@@ -15,7 +28,7 @@
         $funcName.= "<li><a href='signup.php' class='a'>註冊</a></li>";
     }
 
-    include "ajax/tools.php";
+    
 	
 	//---------------------------------
 	// 產出討論版區塊
@@ -128,7 +141,7 @@
 
             L.tileLayer(
                 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                {minZoom: 1, maxZoom: 20}
+                {minZoom: 13, maxZoom: 18}
             ).addTo(mymap);
 
             /*使用插件Marker Clustering*/
@@ -539,16 +552,18 @@
     </body>
     <script src="./mask.js"></script>
     <script>
-        initialize();
-        $(window).scroll(function(){
-                last=$("body").height()-$(window).height();
-                if($(window).scrollTop()>=last){
-                    $("#header").css("background-color","rgba(155, 191, 184,0.3)");//#80FF0000
-                }
-                if($(window).scrollTop()<=last){
-                    $("#header").css("background-color","rgba(155, 191, 184,1)");
-                }
-            });   
+        initialize(); 
+/*		
+		$(window).scroll(function(){
+			last=$("body").height()-$(window).height();
+			if($(window).scrollTop()>=last){
+				$("#header").css("background-color","rgba(155, 191, 184,0.5)");//#80FF0000
+			}
+			if($(window).scrollTop()<=last){
+				$("#header").css("background-color","rgba(155, 191, 184,1)");
+			}
+		});
+*/
         document.getElementById("imgMap").innerHTML ="<button class='btn-none' onclick='toMap()'><img src='./images/map.png' class='imgD'></button>"; 
         $("#mapid").attr("style","display:block");//顯示div
         $("#discussDiv").attr("style","display:none;;");//隱藏div
